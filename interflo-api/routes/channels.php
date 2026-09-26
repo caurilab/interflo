@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Broadcast;
 |
 | - Joueur (public, sans auth) : `session.{sessionId}.{population}`
 |   Charge utile identique pour tous, jamais de correct_index (CA-07).
-|   Ce canal n'est PAS déclaré ici : un canal public n'exige aucune
-|   autorisation. Voir App\Events\RoundOpened.
+|   Voir App\Events\RoundOpened.
 |
-| - Pilotage (privé, auth par jeton pilote) : `pilot.{sessionId}`
-|   À ajouter quand la console animateur consommera le push (D-002 §4.2).
-|   Le polling actuel de la console reste le transport en vigueur.
+| - Pilotage (public, ⚠️ écart D-002 §4.2) : `pilot.{sessionId}`
+|   L'état pilote n'est pas sensible (jamais correct_index, pas de contrôle
+|   par WebSocket). Le canal PRIVÉ viendra avec l'arbitrage de l'auth
+|   animateur (X-Pilot-Token provisoire). Voir App\Events\PilotStateChanged.
 |
 */
 

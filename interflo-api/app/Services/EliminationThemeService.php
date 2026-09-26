@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Events\PilotStateChanged;
 use App\Events\RoundOpened;
 use App\Models\GameRound;
 use App\Models\GameSession;
@@ -166,6 +167,9 @@ class EliminationThemeService
         // (phpunit.xml) → no-op, aucun Reverb requis.
         $round->load('question');
         broadcast(new RoundOpened($theme, $round));
+        // Push temps réel (D-002 §4.2) : l'état pilote (manche courante,
+        // fenêtre, compteurs EX-33) est poussé à la console animateur.
+        broadcast(new PilotStateChanged($theme, $this->pilotState($theme)));
 
         return $round;
     }
@@ -189,6 +193,10 @@ class EliminationThemeService
             'window_closed_at' => now(),
             'status' => GameRound::STATUS_CLOSED,
         ]);
+
+        // Push temps réel (D-002 §4.2) : l'état pilote est poussé à la
+        // console animateur (fenêtre clôturée, compteurs mis à jour).
+        broadcast(new PilotStateChanged($round->theme, $this->pilotState($round->theme)));
 
         return $round;
     }
@@ -230,7 +238,7 @@ class EliminationThemeService
             ]);
         }
 
-        return DB::transaction(function () use ($theme): Collection {
+        $winners = DB::transaction(function () use ($theme): Collection {
             $survivors = $this->survivors->survivors($theme);
             $config = $this->tenantConfig($theme);
 
@@ -256,6 +264,12 @@ class EliminationThemeService
 
             return $theme->winners()->orderBy('rank')->get();
         });
+
+        // Push temps réel (D-002 §4.2) : l'état pilote (thème terminé,
+        // gagnants persistés) est poussé à la console animateur.
+        broadcast(new PilotStateChanged($theme, $this->pilotState($theme)));
+
+        return $winners;
     }
 
     /**
@@ -271,6 +285,9 @@ class EliminationThemeService
         $current = $theme->latestRound;
 
         return [
+            // Identifiant de session : permet à la console animateur de
+            // construire le nom du canal temps réel `pilot.{sessionId}`.
+            'session_id' => $theme->game_session_id,
             'theme' => [
                 'id' => $theme->id,
                 'title' => $theme->title,
