@@ -6,12 +6,16 @@
  * polling reste le transport dégradé (D-1).
  */
 import Echo from 'laravel-echo';
+// Build navigateur de pusher-js : Laravel Echo le requiert via l'option
+// `client` (sinon il cherche `window.Pusher`, absent de ce bundle).
+import Pusher from 'pusher-js';
 import { reverbConfig } from '../config/apiConfig';
 
 /** Crée une instance Echo configurée pour Reverb (protocole Pusher). */
 export function createEcho() {
   return new Echo({
     broadcaster: 'pusher',
+    client: Pusher,
     key: reverbConfig.key,
     wsHost: reverbConfig.host,
     wsPort: reverbConfig.port,

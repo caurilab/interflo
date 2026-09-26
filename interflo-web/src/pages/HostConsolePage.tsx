@@ -198,15 +198,23 @@ function HostConsoleLive({ token, onResetToken }: { token: string; onResetToken:
     const sessionId = themeState?.session_id
     if (sessionId === undefined) return
 
-    const echo = createEcho()
-    echo.channel(pilotChannelName(sessionId)).listen('.pilot.state', (state: PilotThemeState) => {
-      setThemeState(state)
-      setLinkStatus('online')
-    })
+    let echo: ReturnType<typeof createEcho> | null = null
+    try {
+      echo = createEcho()
+      echo.channel(pilotChannelName(sessionId)).listen('.pilot.state', (state: PilotThemeState) => {
+        setThemeState(state)
+        setLinkStatus('online')
+      })
+    } catch {
+      // D-1 : le push échoue → on reste sur le polling (transport dégradé).
+      // Le push est un accélérateur de latence, jamais un requis : ne pas
+      // faire tomber la console si le WebSocket est injoignable.
+      echo = null
+    }
 
     return () => {
-      echo.leaveChannel(pilotChannelName(sessionId))
-      echo.disconnect()
+      echo?.leaveChannel(pilotChannelName(sessionId))
+      echo?.disconnect()
     }
   }, [themeState?.session_id])
 
