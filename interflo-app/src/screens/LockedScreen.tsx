@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import Animated, { FadeIn, FadeInUp, ZoomIn } from 'react-native-reanimated';
 import { MOTION } from '../config/animations';
+import { EnergyBackground } from '../components/EnergyBackground';
 
 type LockedScreenProps = {
   /** Titre du thème pour lequel le joueur est éliminé (charge play/state). */
@@ -31,6 +32,7 @@ export function LockedScreen({ themeTitle }: LockedScreenProps) {
 
   return (
     <SafeAreaView className="flex-1 bg-surface">
+      <EnergyBackground intensity="calm" />
       <View className="flex-1 items-center justify-center px-6">
         {/* Entrée sobre : fondu + montée douce, pastille discrète.
             Rien de punitif ni de triste (M-4) — le joueur reste spectateur. */}

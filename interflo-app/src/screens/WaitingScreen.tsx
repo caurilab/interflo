@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
 import { BrandLogo } from '../components/BrandLogo';
 import { PulseDot } from '../components/PulseDot';
+import { EnergyBackground } from '../components/EnergyBackground';
 // Tokens couleur — source unique (spinner)
 import colors from '../config/colors';
 
@@ -61,6 +62,7 @@ export function WaitingScreen({
 
   return (
     <SafeAreaView className="flex-1 bg-surface">
+      <EnergyBackground intensity="calm" />
       <View className="flex-1 px-8">
         <Animated.View entering={FadeIn.duration(220)} style={{ alignItems: 'center', paddingTop: 24 }}>
           <BrandLogo />

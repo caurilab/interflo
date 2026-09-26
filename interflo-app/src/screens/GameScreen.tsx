@@ -9,6 +9,7 @@ import { SEALED } from '../config/gameConfig';
 import { MOTION } from '../config/animations';
 import { PropositionButton } from '../components/PropositionButton';
 import { PulseDot } from '../components/PulseDot';
+import { EnergyBackground } from '../components/EnergyBackground';
 
 type GameScreenProps = {
   /** Titre du thème en cours (charge utile play/state). */
@@ -55,6 +56,7 @@ export function GameScreen({
 
   return (
     <SafeAreaView className="flex-1 bg-surface">
+      <EnergyBackground intensity="live" />
       <View className="flex-1 px-5 py-6">
         {/* Bannière fenêtre ouverte — point magenta pulsant, entrée animée
             (l'ouverture de la fenêtre doit se SENTIR, D-001 §3) */}

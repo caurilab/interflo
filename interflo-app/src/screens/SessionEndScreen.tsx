@@ -14,7 +14,11 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { GradientView } from '../components/GradientView';
+import { EnergyBackground } from '../components/EnergyBackground';
+import { ShockwaveRings } from '../components/ShockwaveRings';
 import { MOTION } from '../config/animations';
+// Tokens couleur — source unique (anneaux de célébration)
+import colors from '../config/colors';
 
 type SessionEndScreenProps = {
   /** Bit winner personnel (I-28) — SON bit, jamais la liste des gagnants. */
@@ -72,6 +76,7 @@ export function SessionEndScreen({ winner, themeTitle }: SessionEndScreenProps) 
 
   return (
     <SafeAreaView className="flex-1 bg-surface">
+      <EnergyBackground intensity={winner ? 'celebrate' : 'calm'} />
       <View className="flex-1 items-center justify-center px-6">
         {winner ? (
           /* Gagnant — moment de fête : spring + cascade + respiration */
@@ -90,12 +95,15 @@ export function SessionEndScreen({ winner, themeTitle }: SessionEndScreenProps) 
                     .stiffness(MOTION.spring.pop.stiffness)}
                 >
                   <Animated.View style={breathStyle}>
-                    <View
-                      className="h-20 w-20 items-center justify-center rounded-full bg-cream"
-                      accessibilityElementsHidden
-                      importantForAccessibility="no"
-                    >
-                      <Text className="text-4xl font-extrabold text-brand">★</Text>
+                    <View className="h-20 w-20">
+                      <ShockwaveRings color={colors.cream.DEFAULT} size={80} />
+                      <View
+                        className="h-20 w-20 items-center justify-center rounded-full bg-cream"
+                        accessibilityElementsHidden
+                        importantForAccessibility="no"
+                      >
+                        <Text className="text-4xl font-extrabold text-brand">★</Text>
+                      </View>
                     </View>
                   </Animated.View>
                 </Animated.View>

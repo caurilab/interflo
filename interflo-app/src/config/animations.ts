@@ -82,4 +82,30 @@ export const MOTION = {
     titleMs: 260,
     subtitleMs: 360,
   },
+
+  /**
+   * Halo d'énergie ambiant (EnergyBackground) — deux nappes magenta/orange
+   * qui respirent et dérivent lentement derrière le contenu. Amplitude et
+   * opacité faibles : la « vie » du fond, jamais une distraction (entrée de
+   * gamme). Intensité croissante calm (attente) → live (fenêtre) →
+   * celebrate (gain). Périodes longues, aucun coût perceptible.
+   */
+  energy: {
+    calm: { periodMs: 8000, opacityMin: 0.05, opacityMax: 0.1, driftPx: 24 },
+    live: { periodMs: 6000, opacityMin: 0.08, opacityMax: 0.15, driftPx: 32 },
+    celebrate: { periodMs: 4000, opacityMin: 0.1, opacityMax: 0.18, driftPx: 40 },
+  },
+
+  /**
+   * Ondes de choc (ShockwaveRings) autour des pastilles de verdict/gagnant —
+   * anneaux qui s'étendent et s'estompent, pur transform + opacity. Coup
+   * unique : la célébration du moment, sans boucle coûteuse.
+   */
+  shockwave: {
+    ringCount: 2,
+    durationMs: 1000,
+    staggerMs: 240,
+    maxScale: 2.2,
+    maxOpacity: 0.55,
+  },
 } as const;

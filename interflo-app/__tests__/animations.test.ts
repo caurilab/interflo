@@ -44,4 +44,20 @@ describe('MOTION — constantes d\'animation (D-001 §3)', () => {
     expect(MOTION.cascade.badgeMs).toBeLessThan(MOTION.cascade.titleMs);
     expect(MOTION.cascade.titleMs).toBeLessThan(MOTION.cascade.subtitleMs);
   });
+
+  it('le halo ambiant reste lent et discret (entrée de gamme)', () => {
+    for (const spec of Object.values(MOTION.energy)) {
+      expect(spec.periodMs).toBeGreaterThanOrEqual(3000);
+      expect(spec.opacityMax).toBeLessThanOrEqual(0.2);
+      expect(spec.opacityMin).toBeLessThan(spec.opacityMax);
+      expect(spec.driftPx).toBeLessThanOrEqual(60);
+    }
+  });
+
+  it('les ondes de choc sont brèves, finies et mesurées (pas de boucle)', () => {
+    expect(MOTION.shockwave.ringCount).toBeGreaterThanOrEqual(1);
+    expect(MOTION.shockwave.ringCount).toBeLessThanOrEqual(3);
+    expect(MOTION.shockwave.durationMs).toBeLessThanOrEqual(1500);
+    expect(MOTION.shockwave.maxOpacity).toBeLessThanOrEqual(0.7);
+  });
 });

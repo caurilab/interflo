@@ -8,6 +8,8 @@ import Animated, {
   ZoomIn,
 } from 'react-native-reanimated';
 import { GradientView } from '../components/GradientView';
+import { EnergyBackground } from '../components/EnergyBackground';
+import { ShockwaveRings } from '../components/ShockwaveRings';
 // Tokens couleur — source unique (pastille de verdict)
 import colors from '../config/colors';
 import { MOTION } from '../config/animations';
@@ -51,6 +53,7 @@ export function FeedbackScreen({ isCorrect }: FeedbackScreenProps) {
 
   return (
     <SafeAreaView className="flex-1 bg-surface">
+      <EnergyBackground intensity={isCorrect ? 'celebrate' : 'calm'} />
       <View className="flex-1 items-center justify-center px-6">
         {isCorrect ? (
           /* Célébration énergique — dégradé d'énergie, entrée en spring */
@@ -69,14 +72,17 @@ export function FeedbackScreen({ isCorrect }: FeedbackScreenProps) {
                     .damping(MOTION.spring.pop.damping)
                     .stiffness(MOTION.spring.pop.stiffness)}
                 >
-                  <View
-                    className="h-20 w-20 items-center justify-center rounded-full bg-cream"
-                    accessibilityElementsHidden
-                    importantForAccessibility="no"
-                  >
-                    <Text className="text-4xl font-extrabold" style={{ color: colors.brand.DEFAULT }}>
-                      ✓
-                    </Text>
+                  <View className="h-20 w-20">
+                    <ShockwaveRings color={colors.cream.DEFAULT} size={80} />
+                    <View
+                      className="h-20 w-20 items-center justify-center rounded-full bg-cream"
+                      accessibilityElementsHidden
+                      importantForAccessibility="no"
+                    >
+                      <Text className="text-4xl font-extrabold" style={{ color: colors.brand.DEFAULT }}>
+                        ✓
+                      </Text>
+                    </View>
                   </View>
                 </Animated.View>
                 <Animated.View entering={FadeIn.delay(MOTION.cascade.titleMs).duration(240)}>
