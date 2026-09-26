@@ -7,11 +7,11 @@
 export const apiConfig = {
   /**
    * URL de base de l'API (sans /api/v1).
-   * ⚠️ Point de départ dev : instance Laravel locale (`php artisan serve`).
-   * À remplacer par une résolution par environnement dès que le déploiement
-   * sera arrêté.
+   * ⚠️ Point de départ dev : instance Laravel servie par Herd
+   * (`api.interflo.test`, HTTPS). À remplacer par une résolution par
+   * environnement dès que le déploiement sera arrêté.
    */
-  baseUrl: 'http://127.0.0.1:8000',
+  baseUrl: 'https://api.interflo.test',
 
   /**
    * Intervalle de polling de l'état du thème (`GET pilot/themes/{id}/state`),
