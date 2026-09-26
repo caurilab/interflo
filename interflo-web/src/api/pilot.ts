@@ -58,6 +58,8 @@ export interface PilotTheme {
 
 /** Réponse de GET pilot/themes/{theme}/state (ThemeStateResource). */
 export interface PilotThemeState {
+  /** Identifiant de session : sert à construire le canal temps réel `pilot.{id}`. */
+  session_id: number
   theme: {
     id: number
     title: string

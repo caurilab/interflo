@@ -21,3 +21,16 @@ export const apiConfig = {
    */
   statePollIntervalMs: 2000,
 } as const;
+
+/**
+ * Configuration du transport temps réel Reverb (D-002 §4.2).
+ * ⚠️ POINT DE DÉPART DEV : la clé est l'identifiant PUBLIC de l'app Reverb
+ * (REVERB_APP_KEY côté API), alignée sur `.env` de l'API.
+ */
+export const reverbConfig = {
+  key: 'zwipvzkreqbtb5avs1bm',
+  host: 'localhost',
+  port: 8080,
+  forceTLS: false,
+  enabledTransports: ['ws', 'wss'],
+} as const;

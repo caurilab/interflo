@@ -20,6 +20,7 @@ import {
 import type { PilotThemeState, PilotWinner, Population } from '../api/pilot'
 import { apiConfig } from '../config/apiConfig'
 import { consoleConfig } from '../config/consoleConfig'
+import { createEcho, pilotChannelName } from '../realtime/echo'
 import BigActionButton from '../components/BigActionButton'
 import BrandLogo from '../components/BrandLogo'
 import ConfirmDialog from '../components/ConfirmDialog'
@@ -168,6 +169,25 @@ function HostConsoleLive({ token, onResetToken }: { token: string; onResetToken:
   const connected = linkStatus === 'online'
   const currentRound = themeState?.current_round ?? null
   const themeFinished = themeState?.theme.status === 'finished'
+
+  // Push temps réel (D-002 §4.2) : dès que la session est connue, on s'abonne
+  // au canal pilote. À la réception de `pilot.state`, l'état affiché est mis
+  // à jour immédiatement (le polling reste le transport dégradé D-1).
+  useEffect(() => {
+    const sessionId = themeState?.session_id
+    if (sessionId === undefined) return
+
+    const echo = createEcho()
+    echo.channel(pilotChannelName(sessionId)).listen('.pilot.state', (state: PilotThemeState) => {
+      setThemeState(state)
+      setLinkStatus('online')
+    })
+
+    return () => {
+      echo.leaveChannel(pilotChannelName(sessionId))
+      echo.disconnect()
+    }
+  }, [themeState?.session_id])
 
   // Disponibilité des actions : état SERVEUR uniquement (jamais optimiste).
   const canOpen = connected && !themeFinished && currentRound?.status === 'pending'

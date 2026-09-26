@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "i18next": "^26.4.2",
+    "laravel-echo": "^2.5.0",
+    "pusher-js": "^8.6.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-i18next": "^17.0.15",
