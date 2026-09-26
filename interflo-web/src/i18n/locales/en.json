@@ -1,0 +1,157 @@
+{
+  "common": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "notConnected": "NOT CONNECTED",
+    "logoAlt": "Interflo logo"
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "fr": "FR",
+    "en": "EN"
+  },
+  "home": {
+    "subtitle": "Live consoles — host and question agent",
+    "hostConsole": {
+      "title": "Host console",
+      "description": "Tablet — live window control",
+      "badge": "Live"
+    },
+    "questionAgent": {
+      "title": "Question agent console",
+      "description": "Human validation of proposed questions (I-33)",
+      "badge": "Production"
+    }
+  },
+  "connectionBadge": {
+    "online": "CONNECTED",
+    "offline": "LINK LOST — request failed",
+    "unauthorized": "NOT CONNECTED — token missing or rejected"
+  },
+  "pilotTokenGate": {
+    "title": "Pilot token required",
+    "intro": "Enter the token of the game session to pilot. It is displayed read-only in the back-office (session record).",
+    "provisionalWarning": "⚠️ PROVISIONAL, unspecified host auth: opaque token per session (X-Pilot-Token header). This mechanism will be replaced once decided.",
+    "label": "Pilot token",
+    "placeholder": "Paste the session token",
+    "submit": "CONNECT THE CONSOLE",
+    "storageHint": "The token is kept for the browsing session and never displayed again. Without a valid token, the controls stay inactive."
+  },
+  "hostConsole": {
+    "title": "Host console",
+    "subtitle": "Elimination format — server state, never optimistic (F-1)",
+    "changeToken": "Change token",
+    "fillerReminder": {
+      "title": "After each question: fill ≈ {{seconds}} s",
+      "detail": "Personal window, not absolute — chaining too fast cuts off lagging players. Unvalidated value (20-25 s ballpark)."
+    },
+    "errors": {
+      "auth": "Token rejected by the server (401/404) — check the session token. Controls inactive.",
+      "network": "Server unreachable — check the link. Controls inactive.",
+      "unknown": "Unexpected error — see console."
+    },
+    "windowState": {
+      "title": "Window state (server state)",
+      "round": "Round {{number}}",
+      "noRound": "No round",
+      "values": {
+        "pending": "READY TO OPEN",
+        "open": "WINDOW OPEN",
+        "closed": "WINDOW CLOSED",
+        "finished": "GAME OVER",
+        "none": "WAITING"
+      }
+    },
+    "counters": {
+      "participations": "Entries",
+      "survivors": "Survivors"
+    },
+    "population": {
+      "studio": "Studio",
+      "home": "Home"
+    },
+    "createTheme": {
+      "title": "New game (elimination format)",
+      "intro": "Creates the theme and schedules its first round. The theme targets ONE population (I-1) — studio or home, never both.",
+      "fieldTitle": "Theme title",
+      "fieldPopulation": "Population",
+      "fieldFirstQuestionId": "Validated question id (round 1)",
+      "questionIdHint": "Question validated in the Filament back-office (EX-40). ⚠️ Contract gap: no route lists validated questions — the id is read in Filament.",
+      "submit": "CREATE THE GAME",
+      "submitting": "Creating…"
+    },
+    "gameResult": {
+      "title": "Game result",
+      "placeholder": "The game is running — the winners draw (I-28) will appear here after “End the game”.",
+      "winnersCount": "Winners drawn: {{count}}",
+      "winnerRank": "Rank {{rank}} — player #{{id}}",
+      "winnerNoRank": "Player #{{id}}",
+      "finishedElsewhere": "Game over (draw already done — the detail is not re-read by the contract).",
+      "newGame": "New game"
+    },
+    "actions": {
+      "openWindow": {
+        "label": "OPEN THE WINDOW",
+        "hint": "Announced by the app (I-3)"
+      },
+      "closeWindow": {
+        "label": "CLOSE THE WINDOW",
+        "hint": "The server rejects outside the window (I-2)"
+      },
+      "nextRound": {
+        "label": "NEXT ROUND",
+        "hint": "Schedules round N+1 — validated question required (EX-40). Disabled while the current window is not closed."
+      },
+      "finishGame": {
+        "label": "END THE GAME",
+        "hint": "Draws the winners among the survivors (I-28) — idempotent server-side."
+      }
+    },
+    "confirm": {
+      "inFlight": "Sending…",
+      "openWindow": {
+        "title": "Open the window?",
+        "body": "Players in the theme’s population will be able to answer. Opening is announced by the app, never by the picture (I-3).",
+        "confirm": "Open"
+      },
+      "closeWindow": {
+        "title": "Close the window?",
+        "body": "Outside the window, the server rejects every answer (I-2). Players currently typing will be cut off.",
+        "confirm": "Close"
+      },
+      "nextRound": {
+        "title": "Schedule the next round?",
+        "body": "Reserved for survivors (EX-32): nobody joins a game midway. The current window must be closed.",
+        "questionIdLabel": "Validated question id for this round",
+        "confirm": "Schedule"
+      },
+      "finishGame": {
+        "title": "End the game?",
+        "body": "Triggers the winners draw among the survivors (I-28). The server rejects until the 5 rounds are closed. Idempotent action.",
+        "confirm": "End the game"
+      }
+    }
+  },
+  "questionAgent": {
+    "title": "Question agent console",
+    "subtitle": "I-33 — the model proposes, the human validates. Nothing goes on air without validation.",
+    "transcription": {
+      "title": "Live transcription (timestamped)",
+      "placeholder": "Placeholder — the timestamped transcription will appear here.",
+      "placeholderHint": "Each line will carry a clickable time code (jump back to the passage and the sound)."
+    },
+    "questions": {
+      "title": "Questions proposed by the model",
+      "placeholder": "Placeholder — no proposed questions.",
+      "placeholderHint": "The model’s proposals will appear here during the show."
+    },
+    "actions": {
+      "correct": "CORRECT",
+      "correctHint": "Workshop edit — nothing goes on air",
+      "validate": "VALIDATE",
+      "validateHint": "On-air lock — explicit gesture (I-33)",
+      "disabledReason": "Actions disabled: no question to process and console not connected."
+    }
+  }
+}

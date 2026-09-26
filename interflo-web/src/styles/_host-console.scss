@@ -1,0 +1,201 @@
+// Styles propres à la console animateur (src/pages/HostConsolePage.tsx).
+//
+// D-001 §3 : cette surface agit à l'antenne — les animations portent sur les
+// CHANGEMENTS D'ÉTAT (fenêtre, compteurs, gagnants), jamais sur le chemin
+// d'action : aucun délai sur les handlers, aucune animation permanente.
+// ⚠️ Polling 2 s : les classes d'état sont stables entre les ticks (React ne
+// touche pas au DOM si la classe est inchangée) et les compteurs sont animés
+// par remount conditionné à la valeur (key React) — un état stable ne
+// relance JAMAIS une animation.
+
+@use "variables" as *;
+
+// Rappel F-5 — enveloppe à meubler après chaque question.
+// Mis en valeur : bandeau cream plein, texte sombre — l'élément le plus
+// lumineux de l'écran après les actions, impossible à manquer sans crier.
+.filler-banner {
+  background-color: $brand-cream;
+  border: 2px solid $brand-cream;
+  color: $color-text-on-cream;
+}
+
+.filler-banner__detail {
+  color: rgba($color-text-on-cream, 0.72);
+}
+
+// Alerte d'échec d'action ou de création : rouge sémantique, bloc plein.
+// Entrée animée (montée courte) : une alerte qui apparaît doit attirer
+// l'œil — c'est un changement d'état, pas un geste de direct.
+.offline-alert {
+  background-color: $color-danger;
+  border: 2px solid $color-danger-deep;
+  color: #fff;
+  animation: host-alert-in 200ms ease-out both;
+}
+
+@keyframes host-alert-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.offline-alert__dismiss {
+  border: 1px solid rgba(#fff, 0.6);
+  color: #fff;
+  transition: background-color 80ms ease-out;
+
+  &:hover {
+    background-color: rgba(#fff, 0.12);
+  }
+}
+
+// Valeur placeholder des panneaux (état serveur non encore lu) : visiblement
+// inactive, sans ambiguïté sur le fait que ce n'est PAS l'état serveur (F-1).
+.host-console__placeholder-value {
+  color: $color-text-faint;
+}
+
+// ─── Bandeau d'état de la fenêtre (état SERVEUR, F-1) ──────────────────────
+// La classe d'état (window-panel--open, etc.) est posée sur le panneau : elle
+// ne change que quand l'état SERVEUR change — le polling 2 s ne la relance pas.
+.window-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+// Passage fermée → ouverte : sweep lumineux dégradé qui traverse le bandeau
+// une seule fois (l'animation ne rejoue que si la classe est retirée puis
+// reposée — donc uniquement sur une vraie transition d'état).
+.window-panel--open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 25%,
+    rgba($color-success, 0.22) 48%,
+    rgba($brand-cream, 0.28) 52%,
+    transparent 75%
+  );
+  transform: translateX(-100%);
+  animation: window-state-sweep 700ms ease-out forwards;
+}
+
+// Partie terminée : même idée, accent « gain » cream.
+.window-panel--finished::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 25%,
+    rgba($brand-cream, 0.16) 50%,
+    transparent 75%
+  );
+  transform: translateX(-100%);
+  animation: window-state-sweep 700ms ease-out forwards;
+}
+
+@keyframes window-state-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+// État de la fenêtre : couleur sémantique franche, lisible à distance.
+// Transition de couleur douce entre états (le changement est instantané
+// côté information, la teinte suit en 240 ms — purement décoratif).
+.window-state {
+  transition: color 240ms ease-out;
+}
+
+.window-state--open {
+  color: $color-success; // fenêtre ouverte : le jeu tourne
+}
+
+.window-state--pending,
+.window-state--closed {
+  color: $color-text; // état stable, neutre
+}
+
+.window-state--finished {
+  color: $brand-cream; // partie terminée : « gain », accent marque
+}
+
+.window-state--none {
+  color: $color-text-faint;
+}
+
+// ─── Compteurs réels (EX-33) ────────────────────────────────────────────────
+// Le chiffre S'ANIME AU CHANGEMENT DE VALEUR : le <p> est remounté par React
+// (key = valeur), l'animation ne joue donc qu'à un vrai changement — jamais
+// à un tick de polling stable.
+.counter-tick {
+  display: inline-block; // transform sans effet de layout sur le flux
+  animation: counter-tick 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes counter-tick {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Compteur de survivants et nombre de gagnants : accent cream — c'est le
+// chiffre qui descend à l'écran après chaque manche.
+.counter-survivors {
+  color: $brand-cream;
+}
+
+// Identifiant de gagnant (retour de finish, I-28) : pastille sobre.
+// F-6 : ces ids ne sont PAS une liste de répondants.
+// Entrée en cascade légère : --winner-chip-index posé en inline style par le
+// composant (plafonné à 12 pour qu'un long tableau ne devienne pas interminable).
+.winner-chip {
+  background-color: $surface-inset;
+  border: 1px solid $color-border-strong;
+  color: $color-text-muted;
+  animation: winner-chip-in 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(min(var(--winner-chip-index, 0), 12) * 55ms);
+}
+
+@keyframes winner-chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Sélecteur de population : gros choix binaire, état coché franc en magenta.
+.population-option {
+  background-color: $surface-overlay;
+  border: 2px solid $color-border-strong;
+  color: $color-text-muted;
+  transition: border-color 80ms ease-out, background-color 80ms ease-out, color 80ms ease-out;
+
+  &:has(:checked) {
+    background-color: rgba($brand-primary, 0.18);
+    border-color: $brand-primary;
+    color: #fff;
+  }
+}

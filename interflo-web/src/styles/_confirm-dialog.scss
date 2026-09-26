@@ -1,0 +1,87 @@
+// Styles propres au composant ConfirmDialog (src/components/ConfirmDialog.tsx).
+//
+// F-4 : toute action à effet sur le direct passe par cette modale — elle doit
+// être sérieuse et lisible, jamais spectaculaire. Surface pleine, contraste
+// élevé, deux gestes clairement différenciés : annuler = défaut neutre,
+// confirmer = magenta plein (l'action à assumer).
+
+@use "variables" as *;
+
+.confirm-dialog__backdrop {
+  // Fond très assombri : la modale accapare l'attention, le direct est en pause.
+  background-color: rgba(0, 0, 0, 0.82);
+  // Entrée en fondu court (D-001 §3 : changement d'état animé, mais la modale
+  // est entièrement interactive dès le premier frame — aucun délai de clic).
+  animation: confirm-backdrop-in 160ms ease-out both;
+}
+
+.confirm-dialog__panel {
+  background-color: $surface-overlay;
+  border: 2px solid $color-border-strong;
+  // Rappel marque discret : l'accent identifie la modale comme une action
+  // à effet sur le direct, sans crier.
+  border-top: 6px solid $brand-primary;
+  // Entrée : fade + scale léger. Sortie volontairement instantanée : la modale
+  // disparaît dès que l'action est confirmée — l'écran reflète l'état serveur
+  // sans latence (F-1 prime sur l'effet).
+  animation: confirm-panel-in 190ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes confirm-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes confirm-panel-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.confirm-dialog__title {
+  color: $color-text;
+}
+
+// Annulation : geste par défaut, neutre et rassurant.
+.confirm-dialog__cancel {
+  background-color: $surface-raised;
+  border: 2px solid $color-border-strong;
+  color: $color-text;
+  transition: background-color 80ms ease-out;
+
+  &:hover {
+    background-color: $surface-base;
+  }
+}
+
+// Confirmation : magenta plein, geste exigeant et distinct.
+.confirm-dialog__confirm {
+  background-color: $brand-primary;
+  border: 2px solid $brand-primary;
+  color: #fff;
+  transition: filter 80ms ease-out;
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    filter: brightness(0.92);
+  }
+
+  // Confirmation bloquée (action en vol, saisie incomplète) : inactive.
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    filter: none;
+  }
+}

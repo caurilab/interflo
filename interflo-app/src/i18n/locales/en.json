@@ -1,0 +1,83 @@
+{
+  "common": {
+    "logoAlt": "Interflo logo"
+  },
+  "pairing": {
+    "title": "Join the game",
+    "subtitle": "Scan the code shown on screen, or type the code announced by the host.",
+    "qrScanZonePlaceholder": "QR scan area\n(camera not connected yet)",
+    "tvCodeLabel": "Code shown on TV",
+    "spokenCodeLabel": "Code announced out loud",
+    "shortCodeAccessibilityLabel": "Short code announced by the host",
+    "join": "Join",
+    "codeLengthHint": "{{length}} letters or digits",
+    "errorInvalidCode": "Invalid or expired code — check the announced code and try again."
+  },
+  "errors": {
+    "network": "Cannot reach the server — check your connection and try again.",
+    "generic": "Something went wrong — please try again in a moment.",
+    "tooManyAttempts": "Too many attempts — please wait a little before trying again."
+  },
+  "pairingConfirmation": {
+    "title": "Is this the right show?",
+    "channelLabel": "Channel",
+    "emissionLabel": "Show",
+    "participate": "Participate",
+    "cancel": "Back"
+  },
+  "phone": {
+    "title": "Verify your number",
+    "subtitle": "To join, we verify your number once: you'll receive a code by SMS.",
+    "phoneLabel": "Phone number (international format)",
+    "phonePlaceholder": "+33 6 12 34 56 78",
+    "phoneAccessibilityLabel": "Phone number in international format, with country code",
+    "sendCode": "Send me the code",
+    "errorInvalidPhone": "Invalid number — use the international format, e.g. +33 6 12 34 56 78."
+  },
+  "otp": {
+    "title": "Verification code",
+    "subtitle": "Enter the code you received by SMS at {{phone}}.",
+    "codeAccessibilityLabel": "Verification code received by SMS",
+    "verify": "Confirm",
+    "resend": "Resend the code",
+    "resent": "Code resent — check your SMS.",
+    "errorInvalidCode": "Invalid or expired code — check the SMS and try again."
+  },
+  "waiting": {
+    "title": "The game is about to start",
+    "currentSession": "{{tenant}} — {{emission}}",
+    "idleSubtitle": "The show hasn't started a game yet — stay on this screen, the app will let you know as soon as it begins.",
+    "betweenRounds": "Round {{round}} over — the next one is coming, stay ready.",
+    "betweenRoundsNoNumber": "The next round is coming — stay ready.",
+    "connectionLost": "Unstable connection — retrying automatically.",
+    "quit": "Leave the session"
+  },
+  "game": {
+    "windowOpen": "Window open — your move!",
+    "roundLabel": "{{theme}} — round {{round}}/{{total}}",
+    "rejection": {
+      "tooFast": "A bit too early! Your answer didn't count — tap again.",
+      "windowExceeded": "Time was up for this one — the next question is coming soon.",
+      "network": "Connection lost while sending — tap again.",
+      "generic": "Your answer couldn't be counted — the game moves on."
+    }
+  },
+  "feedback": {
+    "correctTitle": "Correct!",
+    "correctSubtitle": "Well done — stay focused, more is coming.",
+    "wrongTitle": "Not this one",
+    "wrongSubtitle": "No worries — the next question is coming soon, you still have your chance.",
+    "waitingNext": "More is coming — stay on this screen."
+  },
+  "locked": {
+    "title": "Out for this theme",
+    "theme": "\"{{theme}}\"",
+    "subtitle": "Well played making it this far! You keep a front-row seat to watch the end of the game — the next theme will be your chance for a rematch."
+  },
+  "finished": {
+    "winnerTitle": "You're a winner!",
+    "winnerSubtitle": "Congratulations — you win \"{{theme}}\"!",
+    "loserTitle": "Game over",
+    "loserSubtitle": "Thanks for playing \"{{theme}}\" — the next game will be your chance."
+  }
+}

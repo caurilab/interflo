@@ -1,0 +1,13 @@
+// Styles propres au composant BrandLogo (src/components/BrandLogo.tsx).
+//
+// ⚠️ Le wordmark est blanc : le logo n'est lisible que sur fond sombre
+// (D-001 §2). Les consoles sont en thème sombre, ne pas l'utiliser sur
+// fond clair.
+
+@use "variables" as *;
+
+// Variante vitrine (accueil) : halo magenta statique derrière le logo.
+// Effet peint une fois, jamais animé.
+.brand-logo--hero {
+  filter: drop-shadow(0 0 1.5rem rgba($brand-primary, 0.45));
+}

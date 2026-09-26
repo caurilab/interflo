@@ -1,0 +1,83 @@
+{
+  "common": {
+    "logoAlt": "Logo Interflo"
+  },
+  "pairing": {
+    "title": "Rejoindre le jeu",
+    "subtitle": "Scanne le code affiché à l'écran, ou tape le code annoncé par l'animateur.",
+    "qrScanZonePlaceholder": "Zone de scan QR\n(caméra à brancher)",
+    "tvCodeLabel": "Code affiché à la télé",
+    "spokenCodeLabel": "Code annoncé à l'oral",
+    "shortCodeAccessibilityLabel": "Code court annoncé par l'animateur",
+    "join": "Rejoindre",
+    "codeLengthHint": "{{length}} lettres ou chiffres",
+    "errorInvalidCode": "Code invalide ou expiré — vérifie le code annoncé et réessaie."
+  },
+  "errors": {
+    "network": "Impossible de joindre le serveur — vérifie ta connexion et réessaie.",
+    "generic": "Une erreur est survenue — réessaie dans un instant.",
+    "tooManyAttempts": "Trop de tentatives — patiente un peu avant de réessayer."
+  },
+  "pairingConfirmation": {
+    "title": "C'est bien cette émission ?",
+    "channelLabel": "Chaîne",
+    "emissionLabel": "Émission",
+    "participate": "Participer",
+    "cancel": "Retour"
+  },
+  "phone": {
+    "title": "Vérifie ton numéro",
+    "subtitle": "Pour participer, on vérifie ton numéro une fois : tu vas recevoir un code par SMS.",
+    "phoneLabel": "Numéro de téléphone (format international)",
+    "phonePlaceholder": "+33 6 12 34 56 78",
+    "phoneAccessibilityLabel": "Numéro de téléphone au format international, avec indicatif",
+    "sendCode": "Recevoir le code",
+    "errorInvalidPhone": "Numéro invalide — utilise le format international, ex. +33 6 12 34 56 78."
+  },
+  "otp": {
+    "title": "Code de vérification",
+    "subtitle": "Entre le code reçu par SMS au {{phone}}.",
+    "codeAccessibilityLabel": "Code de vérification reçu par SMS",
+    "verify": "Valider",
+    "resend": "Renvoyer le code",
+    "resent": "Code renvoyé — vérifie tes SMS.",
+    "errorInvalidCode": "Code invalide ou expiré — vérifie le SMS et réessaie."
+  },
+  "waiting": {
+    "title": "Le jeu va bientôt commencer",
+    "currentSession": "{{tenant}} — {{emission}}",
+    "idleSubtitle": "L'émission n'a pas encore lancé de partie — reste sur cet écran, l'application t'avertira dès que ça commence.",
+    "betweenRounds": "Manche {{round}} terminée — la suivante arrive, reste prêt.",
+    "betweenRoundsNoNumber": "La prochaine manche arrive — reste prêt.",
+    "connectionLost": "Connexion instable — on réessaie automatiquement.",
+    "quit": "Quitter la session"
+  },
+  "game": {
+    "windowOpen": "Fenêtre ouverte — à toi de jouer !",
+    "roundLabel": "{{theme}} — manche {{round}}/{{total}}",
+    "rejection": {
+      "tooFast": "Un peu trop tôt ! Ta réponse n'a pas compté — retente ton geste.",
+      "windowExceeded": "Le temps était écoulé pour celle-ci — la prochaine arrive vite.",
+      "network": "Connexion perdue au moment de l'envoi — retente ton geste.",
+      "generic": "Ta réponse n'a pas pu être prise en compte — la suite arrive."
+    }
+  },
+  "feedback": {
+    "correctTitle": "Bonne réponse !",
+    "correctSubtitle": "Bien joué — reste concentré, la suite arrive.",
+    "wrongTitle": "Raté pour celle-ci",
+    "wrongSubtitle": "Ce n'est pas grave — la prochaine question arrive vite, tu as encore ta chance.",
+    "waitingNext": "La suite arrive — reste sur cet écran."
+  },
+  "locked": {
+    "title": "Éliminé pour ce thème",
+    "theme": "« {{theme}} »",
+    "subtitle": "Bien joué d'être allé jusque-là ! Tu restes aux premières loges pour suivre la fin de la partie — le prochain thème t'offrira ta revanche."
+  },
+  "finished": {
+    "winnerTitle": "Tu es gagnant !",
+    "winnerSubtitle": "Bravo — tu remportes « {{theme}} » !",
+    "loserTitle": "Partie terminée",
+    "loserSubtitle": "Merci d'avoir joué « {{theme}} » — la prochaine partie sera ta chance."
+  }
+}

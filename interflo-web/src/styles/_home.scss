@@ -1,0 +1,199 @@
+// Styles propres à la page d'accueil (src/pages/HomePage.tsx).
+//
+// Vitrine du produit : c'est ici que le « gaming » de D-001 §3 est assumé —
+// halo d'énergie ANIMÉ (dérive lente), entrée des cartes en cascade, survols
+// vivants. Aucun état de direct ici : aucun garde-fou de latence ne s'applique,
+// mais les effets restent compositor-friendly (transform / opacity uniquement,
+// pas de flou ni d'ombre animée en boucle).
+
+@use "variables" as *;
+
+.home {
+  position: relative;
+  overflow: hidden;
+  // Stacking context dédié : les halos (z-index: -1) restent derrière le
+  // contenu mais devant le fond de page.
+  isolation: isolate;
+
+  // ── Halo d'énergie animé : deux nappes radiales en dérive lente ─────────
+  // Les dégradés vivent sur des pseudo-éléments animés en transform (pas de
+  // repaint de background à chaque frame). Mouvement ample et lent : l'énergie
+  // se sent, elle ne distrait pas la lecture du hero.
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    z-index: -1;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  &::before {
+    background: radial-gradient(58rem 26rem at 50% 8%, rgba($brand-primary, 0.22), transparent 62%);
+    animation: home-halo-drift-a 14s ease-in-out infinite alternate;
+  }
+
+  &::after {
+    background: radial-gradient(42rem 20rem at 82% 96%, rgba($brand-gradient-from, 0.14), transparent 60%);
+    animation: home-halo-drift-b 18s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes home-halo-drift-a {
+  from {
+    transform: translate3d(-4%, -2%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(4%, 4%, 0) scale(1.08);
+  }
+}
+
+@keyframes home-halo-drift-b {
+  from {
+    transform: translate3d(3%, 3%, 0) scale(1.05);
+  }
+  to {
+    transform: translate3d(-5%, -3%, 0) scale(1);
+  }
+}
+
+// Entrée du hero : montée douce, une seule fois au chargement.
+.home header {
+  animation: home-rise 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes home-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.home__subtitle {
+  color: $color-text-muted;
+}
+
+// Carte d'accès à une console.
+.console-card {
+  position: relative;
+  overflow: hidden;
+  background-color: $surface-raised;
+  border: 2px solid $color-border;
+  transition:
+    transform 160ms ease-out,
+    border-color 160ms ease-out,
+    box-shadow 160ms ease-out;
+  // Entrée en cascade (delay par position, voir plus bas).
+  animation: console-card-in 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  // Barre d'accent en tête de carte.
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 6px;
+    transition: height 160ms ease-out;
+  }
+
+  // Survol vivant : soulèvement + la barre d'accent qui s'épaissit.
+  &:hover {
+    transform: translateY(-4px) scale(1.015);
+
+    &::before {
+      height: 10px;
+    }
+  }
+}
+
+// Cascade d'entrée : la deuxième carte suit la première.
+.home nav .console-card:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+@keyframes console-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Console animateur : accent magenta / dégradé d'énergie.
+.console-card--host {
+  &::before {
+    background: $gradient-energy;
+  }
+
+  &:hover {
+    border-color: $brand-primary;
+    // Lueur d'énergie au survol (statique une fois la transition jouée).
+    box-shadow: 0 14px 44px -14px rgba($brand-primary, 0.5);
+  }
+
+  .console-card__title {
+    color: #fff;
+  }
+}
+
+// Console agent questions : accent cream.
+.console-card--agent {
+  &::before {
+    background: $brand-cream;
+  }
+
+  &:hover {
+    border-color: $brand-cream;
+    box-shadow: 0 14px 44px -14px rgba($brand-cream, 0.35);
+  }
+
+  .console-card__title {
+    color: $brand-cream;
+  }
+}
+
+.console-card__description {
+  color: $color-text-muted;
+}
+
+// Pastille de rôle sur chaque carte.
+.console-card__badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  .console-card--host & {
+    background: $gradient-energy;
+    color: #fff;
+  }
+
+  .console-card--agent & {
+    background-color: $brand-cream;
+    color: $color-text-on-cream;
+  }
+}
+
+// Mouvement réduit : halos fixes (identité conservée), entrées instantanées,
+// survols sans déplacement. La garde globale de _base.scss neutralise déjà
+// les durées ; ici on fige explicitement la dérive infinie.
+@media (prefers-reduced-motion: reduce) {
+  .home::before,
+  .home::after {
+    animation: none;
+  }
+
+  .console-card:hover {
+    transform: none;
+  }
+}

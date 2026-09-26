@@ -1,0 +1,79 @@
+// Styles propres au composant BigActionButton (src/components/BigActionButton.tsx).
+//
+// Console animateur — hiérarchie d'action D-001 (corporate d'abord) :
+// - energy   : OUVRIR — dégradé d'énergie officiel, l'action qui lance le jeu ;
+// - firm     : FERMER — neutre affirmé, surface sombre à bord franc ;
+// - distinct : RELANCER — contour cream, clairement distinct des deux autres.
+//
+// Rappels invariants :
+// - F-3 : zone tactile très large (min-h-28 posée dans le JSX), ne jamais réduire ;
+// - aucune animation qui retarde le geste : transitions ≤ 100 ms, état :active
+//   instantané, aucun effet permanent (pas de pulse, pas de halo animé).
+
+@use "variables" as *;
+
+.big-action {
+  border: 4px solid transparent;
+  // Feedback instantané, jamais retardant.
+  transition: filter 80ms ease-out, transform 80ms ease-out;
+
+  &:hover {
+    filter: brightness(1.08);
+  }
+
+  &:active {
+    transform: scale(0.99);
+    filter: brightness(0.95);
+  }
+
+  // Action indisponible (état serveur incompatible ou lien non établi) :
+  // visiblement inactive, jamais confondue avec un bouton prêt (F-4).
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: none;
+    transform: none;
+  }
+}
+
+.big-action__hint {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+// OUVRIR — énergie : dégradé officiel, texte blanc, hint cream.
+.big-action--energy {
+  background: $gradient-energy;
+  border-color: rgba(#fff, 0.18);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+
+  .big-action__hint {
+    color: rgba($brand-cream, 0.9);
+    text-shadow: none;
+  }
+}
+
+// FERMER — neutre affirmé : surface sombre, bord franc, texte blanc.
+.big-action--firm {
+  background-color: $surface-overlay;
+  border-color: $color-border-strong;
+  color: $color-text;
+
+  .big-action__hint {
+    color: $color-text-muted;
+  }
+}
+
+// RELANCER — distinct : contour cream sur surface sombre.
+.big-action--distinct {
+  background-color: $surface-raised;
+  border-color: $brand-cream;
+  color: $brand-cream;
+
+  .big-action__hint {
+    color: rgba($brand-cream, 0.65);
+  }
+}

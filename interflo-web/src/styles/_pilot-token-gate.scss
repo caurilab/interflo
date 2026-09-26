@@ -1,0 +1,55 @@
+// Styles propres au composant PilotTokenGate (src/components/PilotTokenGate.tsx).
+//
+// ⚠️ Écran PROVISOIRE : l'auth animateur n'est pas spécifiée — le backend
+// expose un jeton opaque par session (X-Pilot-Token). Sobriété totale :
+// surface de direct, pas un écran marketing.
+
+@use "variables" as *;
+
+// Champ de saisie générique des consoles (jeton, formulaire de création).
+// Sombre, bord franc, haut contraste — lisible sous pression.
+.console-input {
+  background-color: $surface-inset;
+  border: 2px solid $color-border-strong;
+  color: $color-text;
+  transition: border-color 80ms ease-out;
+
+  &::placeholder {
+    color: $color-text-faint;
+  }
+
+  &:focus {
+    border-color: $brand-primary;
+    outline: none;
+  }
+}
+
+// Avertissement « auth provisoire » : cream discret, sans crier.
+.token-gate__provisional {
+  background-color: rgba($brand-cream, 0.1);
+  border: 1px solid rgba($brand-cream, 0.45);
+  color: $brand-cream;
+}
+
+// Bouton d'envoi (jeton / création de partie) : dégradé d'énergie officiel —
+// c'est le geste qui connecte la console au direct.
+.token-gate__submit {
+  background: $gradient-energy;
+  border: 2px solid rgba(#fff, 0.18);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: filter 80ms ease-out;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+
+  &:active:not(:disabled) {
+    filter: brightness(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}

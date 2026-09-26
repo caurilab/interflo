@@ -1,0 +1,61 @@
+// Styles propres au composant ConnectionBadge (src/components/ConnectionBadge.tsx).
+//
+// F-2 : la perte de lien doit être visible IMMÉDIATEMENT — un silence ambigu
+// en direct est pire qu'une erreur affichée. Le badge est donc un bloc plein,
+// haut contraste, lisible à distance depuis la régie.
+// Aucune animation permanente (sobriété de direct) : la visibilité vient de
+// la surface pleine et du contraste, pas d'un clignotement.
+//
+// Trois états, tous mesurés sur des requêtes réelles (jamais optimistes) :
+// - online       : vert — la dernière requête a réussi ;
+// - offline      : rouge — la dernière requête a échoué (réseau, 5xx…) ;
+// - unauthorized : rouge — jeton absent ou refusé (401/404), console inactive.
+
+@use "variables" as *;
+
+.connection-badge {
+  border: 2px solid transparent;
+}
+
+.connection-badge__label {
+  letter-spacing: 0.06em;
+}
+
+// Lien établi : vert plein, sobre — le seul état où la console agit.
+// La transition de couleur n'est posée QUE sur cet état : entrer dans
+// « online » est doux (240 ms), mais la perte de lien (classe offline /
+// unauthorized, sans transition) repasse au rouge IMMÉDIATEMENT — F-2
+// non négociable : aucun délai visuel sur l'alerte.
+.connection-badge--online {
+  background-color: $color-success;
+  border-color: $color-success-deep;
+  color: #fff;
+  transition: background-color 240ms ease-in, border-color 240ms ease-in;
+
+  .connection-badge__dot {
+    background-color: #fff;
+    box-shadow: 0 0 0 2px rgba(#fff, 0.35);
+  }
+
+  .connection-badge__label {
+    color: #fff;
+  }
+}
+
+// Lien perdu OU jeton non validé : rouge plein, impossible à manquer (F-2).
+.connection-badge--offline,
+.connection-badge--unauthorized {
+  background-color: $color-danger;
+  border-color: $color-danger-deep;
+  color: #fff;
+
+  .connection-badge__dot {
+    // Pastille pleine claire sur fond rouge : statut lisible d'un coup d'œil.
+    background-color: #fff;
+    box-shadow: 0 0 0 2px rgba(#fff, 0.35);
+  }
+
+  .connection-badge__label {
+    color: #fff;
+  }
+}

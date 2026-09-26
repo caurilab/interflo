@@ -1,0 +1,72 @@
+// Base commune aux deux consoles et à l'accueil.
+//
+// Thème sombre D-001 obligatoire : le wordmark du logo est blanc
+// (docs/decisions/D-001-direction-visuelle.md §2). Les surfaces de direct
+// restent sobres — le « gaming » vit dans les accents, jamais dans des
+// effets qui retardent le geste ou distraient à l'antenne.
+
+@use "variables" as *;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: $surface-base;
+  color: $color-text;
+  font-family: $font-family-base;
+}
+
+// Sélection aux couleurs de la marque.
+::selection {
+  background-color: $brand-primary;
+  color: #fff;
+}
+
+// Focus clavier franc et constant — consoles utilisées sous pression.
+:focus-visible {
+  outline: 3px solid $brand-cream;
+  outline-offset: 2px;
+}
+
+// Panneau générique des consoles : surface élevée, bordure discrète.
+// Corporate d'abord : aucun effet permanent, aucune animation.
+.console-panel {
+  background-color: $surface-raised;
+  border: 2px solid $color-border;
+}
+
+// Titre de section de panneau : discret, hiérarchie sobre.
+.console-panel__title {
+  color: $color-text-muted;
+}
+
+// Garde-fou D-001 §3 global : prefers-reduced-motion neutralise TOUTES les
+// animations et transitions du projet (les partials peuvent ajouter des
+// ajustements spécifiques, ex. halo figé sur l'accueil). Durées quasi nulles
+// plutôt que suppression : les changements d'état restent appliqués
+// instantanément, sans casser les transitions d'apparition.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Lien de retour à l'accueil (en-tête des deux consoles) : neutre, discret.
+.console-back {
+  border: 1px solid $color-border-strong;
+  color: $color-text-muted;
+  transition: background-color 80ms ease-out, color 80ms ease-out;
+
+  &:hover {
+    background-color: $surface-raised;
+    color: $color-text;
+  }
+}

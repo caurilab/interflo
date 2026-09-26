@@ -1,0 +1,120 @@
+// Styles propres à la console agent questions (src/pages/QuestionAgentPage.tsx).
+//
+// Rapide avant complète (docs/06-ux-ui.md §5) : hiérarchie claire, accents
+// contenus. Les deux gestes de fin de chaîne sont visuellement distincts
+// (I-33) : VALIDER = dégradé d'énergie plein (verrou d'antenne, geste
+// explicite), CORRIGER = contour cream (retouche, geste d'atelier).
+
+@use "variables" as *;
+
+// Entrées de surface sobres (D-001 §3 : l'outil reste rapide — fade + montée
+// courte, une seule fois au chargement, cascade légère). Aucune animation
+// permanente, aucun effet sur les gestes de validation.
+.question-agent {
+  header,
+  .console-panel,
+  .agent-action,
+  > p {
+    animation: agent-surface-in 260ms ease-out both;
+  }
+
+  // Cascade légère : en-tête, puis transcription, puis file + actions.
+  .console-panel:nth-of-type(1) {
+    animation-delay: 40ms;
+  }
+
+  section:nth-child(2) .console-panel {
+    animation-delay: 80ms;
+  }
+
+  .agent-action:nth-child(1) {
+    animation-delay: 120ms;
+  }
+
+  .agent-action:nth-child(2) {
+    animation-delay: 160ms;
+  }
+
+  > p {
+    animation-delay: 200ms;
+  }
+}
+
+@keyframes agent-surface-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Entrée de liste réutilisable — prête pour la file de questions et la
+// transcription horodatée quand leurs contrats existeront (TODO du
+// composant) : chaque nouvel item porte .agent-entry et apparaît en fondu
+// court. Sobriété de production : pas de cascade longue, pas de délai.
+.agent-entry {
+  animation: agent-surface-in 220ms ease-out both;
+}
+
+// Puits placeholder (transcription, questions) : zone en retrait, tirets
+// discrets — clairement « en attente de données », jamais confondu avec du
+// contenu réel.
+.agent-well {
+  background-color: $surface-inset;
+  border: 1px dashed $color-border-strong;
+  color: $color-text-faint;
+}
+
+// Bouton d'action de la console agent : base commune.
+.agent-action {
+  border: 4px solid transparent;
+  text-align: left;
+  transition: filter 80ms ease-out, transform 80ms ease-out;
+
+  &:not(:disabled):hover {
+    filter: brightness(1.08);
+  }
+
+  &:not(:disabled):active {
+    transform: scale(0.99);
+    filter: brightness(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.agent-action__hint {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+// VALIDER — le verrou d'antenne : plein, saturé, impossible à confondre.
+.agent-action--validate {
+  background: $gradient-energy;
+  border-color: rgba(#fff, 0.18);
+  color: #fff;
+
+  .agent-action__hint {
+    color: rgba($brand-cream, 0.9);
+  }
+}
+
+// CORRIGER — geste d'atelier : contour cream sur surface sombre.
+.agent-action--correct {
+  background-color: $surface-overlay;
+  border-color: $brand-cream;
+  color: $brand-cream;
+
+  .agent-action__hint {
+    color: rgba($brand-cream, 0.65);
+  }
+}

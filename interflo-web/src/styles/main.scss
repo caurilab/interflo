@@ -1,0 +1,19 @@
+// Point d'entrée des styles propres d'interflo-web (convention PO §3).
+//
+// ⚠️ Tailwind v4 N'EST PAS importé ici : la doc officielle Tailwind v4 indique
+// que Tailwind n'est pas conçu pour fonctionner avec Sass (l'import
+// `@import "tailwindcss"` reste dans src/index.css, hors pipeline Sass).
+// Ce fichier ne regroupe que les styles propres, découpés en partials :
+// un composant / une surface = un partial, importé via @use (syntaxe moderne).
+
+@use "variables";
+@use "base";
+@use "home";
+@use "host-console";
+@use "question-agent";
+@use "pilot-token-gate";
+@use "connection-badge";
+@use "confirm-dialog";
+@use "big-action-button";
+@use "language-switcher";
+@use "brand-logo";

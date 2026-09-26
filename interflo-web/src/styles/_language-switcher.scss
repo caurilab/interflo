@@ -1,0 +1,26 @@
+// Styles propres au composant LanguageSwitcher (src/components/LanguageSwitcher.tsx).
+//
+// Contrôle d'interface, hors geste de direct : accent marque contenu
+// (l'option active reprend le magenta D-001), surface discrète.
+
+@use "variables" as *;
+
+.language-switcher {
+  background-color: $surface-raised;
+  border: 1px solid $color-border-strong;
+}
+
+.language-switcher__option {
+  color: $color-text-muted;
+  transition: background-color 80ms ease-out, color 80ms ease-out;
+
+  &:hover {
+    background-color: $surface-overlay;
+    color: $color-text;
+  }
+
+  &.is-active {
+    background-color: $brand-primary;
+    color: #fff;
+  }
+}

@@ -1,0 +1,47 @@
+// Tokens communs aux consoles web (convention PO §3).
+//
+// Palette D-001 « fun, gaming, mais corporate » (docs/decisions/D-001-direction-visuelle.md,
+// tranché PO le 2026-09-25) — dérivée du logo officiel.
+// ⚠️ Ces valeurs sont des points de départ ajustables, pas des valeurs scellées.
+// ⚠️ Le wordmark du logo est blanc : surfaces sombres obligatoires partout.
+
+// ─── Palette marque (D-001 §2) ──────────────────────────────────────────────
+$brand-primary: #d6007d; // magenta — actions principales, accents forts
+$brand-gradient-from: #d96034; // orange — dégradés d'énergie
+$brand-gradient-to: #d6007d; // magenta
+$brand-cream: #fceaac; // highlights, texte sur accents, éléments « gain »
+
+// Dégradé d'énergie officiel (boutons de jeu, moments forts).
+$gradient-energy: linear-gradient(135deg, $brand-gradient-from 0%, $brand-gradient-to 100%);
+
+// ─── Surfaces (thème sombre obligatoire — wordmark blanc) ──────────────────
+$surface-base: #0b0f14; // fond web
+$surface-raised: #101418; // fonds élevés
+$surface-overlay: #161d24; // cartes, zones d'action
+$surface-inset: #0d1218; // zones en retrait (placeholders, puits)
+
+// ─── Texte ──────────────────────────────────────────────────────────────────
+$color-text: #f3f6f9;
+$color-text-muted: #9aa7b4;
+$color-text-faint: #63707e;
+$color-text-on-cream: #2a2008; // texte sombre lisible sur $brand-cream
+
+// ─── Bordures ───────────────────────────────────────────────────────────────
+$color-border: #263039;
+$color-border-strong: #3b4753;
+
+// ─── États sémantiques (hors palette marque — réservés aux statuts) ────────
+$color-danger: #e5484d; // perte de lien (F-2), alertes
+$color-danger-deep: #b02529;
+$color-success: #3fb950; // lien établi (F-2), état « fenêtre ouverte »
+$color-success-deep: #2a7d3a;
+
+// ─── Typographie ────────────────────────────────────────────────────────────
+$font-family-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+// ─── Espacements de référence (repris de l'échelle Tailwind des pages) ─────
+$spacing-page: 1rem; // p-4 sur les consoles, p-8 sur l'accueil
+$spacing-section: 1rem; // gap-4 entre sections
+
+// ─── Points de rupture ──────────────────────────────────────────────────────
+$breakpoint-console-columns: 1024px; // lg: passage en 2 colonnes

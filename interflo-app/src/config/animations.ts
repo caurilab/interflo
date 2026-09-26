@@ -1,0 +1,85 @@
+/**
+ * Constantes d'animation — Interflo (D-001 §3, amendement PO 2026-09-25).
+ *
+ * Direction : « tout doit être bien animé, avec des effets » — le produit
+ * est vivant. Garde-fous D-001 §3 / §4 :
+ * - tout passe par Reanimated (worklets, thread UI) — JAMAIS d'animation
+ *   pilotée par le thread JS, qui doit rester libre pour le polling 2 s ;
+ * - propriétés animées limitées à `opacity` et `transform` — aucun flou,
+ *   aucune ombre portée animée (téléphones d'entrée de gamme, batterie) ;
+ * - les animations ne bloquent jamais le geste (M-1) : le feedback pressé
+ *   est un spring quasi instantané et le handler `onPress` tire sans attendre ;
+ * - on anime les TRANSITIONS, pas les états stables : le polling qui
+ *   re-rend un écran sans changement d'état ne relance rien (les entrées
+ *   sont keyées sur l'identité de l'état, cf. PlayScreen).
+ *
+ * ⚠️ Règle du projet : aucune de ces valeurs n'est validée par le PO —
+ * ce sont des POINTS DE DÉPART PARAMÉTRABLES (comme DEFAULTS de
+ * gameConfig), à faire arbitrer si le ressenti ne convient pas.
+ */
+
+export const MOTION = {
+  /**
+   * Transition entre états de jeu (waiting → question → answered → …) :
+   * fondu croisé piloté par PlayScreen. L'entrée est un peu plus longue
+   * que la sortie — l'arrivée d'une nouvelle question doit se sentir.
+   */
+  screen: {
+    enterMs: 260,
+    exitMs: 140,
+  },
+
+  /**
+   * Cascade d'entrée des 4 propositions (I-4) à l'ouverture d'une manche.
+   * `staggerMs` = délai entre chaque proposition (~60 ms demandé) ;
+   * `baseMs` = la question se pose d'abord, les réponses suivent.
+   */
+  stagger: {
+    baseMs: 120,
+    stepMs: 60,
+  },
+
+  /**
+   * Feedback du geste sur une proposition (M-1 : le geste reste immédiat).
+   * Le handler de réponse part au `onPress`, indépendamment de l'animation.
+   */
+  press: {
+    scale: 0.97,
+  },
+
+  /**
+   * Springs modérés — l'énergie gaming sans le rebond cartoon.
+   * - press : quasi instantané (le doigt sent un contact, pas un délai) ;
+   * - soft : entrées d'écran et panneaux (ferme, sans dépassement marqué) ;
+   * - pop : pastilles de verdict / gagnant (petit dépassement = fête).
+   */
+  spring: {
+    press: { damping: 26, stiffness: 520, mass: 0.4 },
+    soft: { damping: 20, stiffness: 160, mass: 0.9 },
+    pop: { damping: 11, stiffness: 240, mass: 0.7 },
+  },
+
+  /**
+   * Pulse ambiant — la vie discrète des écrans d'attente et la célébration
+   * mesurée de l'écran gagnant. Amplitude faible, période longue : aucun
+   * coût perceptible sur entrée de gamme.
+   */
+  pulse: {
+    /** Indicateur d'attente (WaitingScreen) — lent, calme. */
+    slow: { periodMs: 1800, scaleMin: 0.82, opacityMin: 0.45 },
+    /** Point « fenêtre ouverte » (GameScreen) — plus vif, la fenêtre est courte. */
+    fast: { periodMs: 1100, scaleMin: 0.78, opacityMin: 0.55 },
+    /** Pastille gagnant (SessionEndScreen) — respiration de fête mesurée. */
+    celebration: { periodMs: 1200, scaleMin: 0.94, opacityMin: 0.9 },
+  },
+
+  /**
+   * Délais de cascade internes aux écrans de verdict / fin (pastille,
+   * titre, sous-titre arrivent l'un après l'autre).
+   */
+  cascade: {
+    badgeMs: 160,
+    titleMs: 260,
+    subtitleMs: 360,
+  },
+} as const;

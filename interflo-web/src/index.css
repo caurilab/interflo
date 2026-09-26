@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/*
+ * Entrée utilitaires Tailwind v4 — VOLONTAIREMENT séparée de src/styles/main.scss.
+ *
+ * La doc officielle Tailwind v4 indique que Tailwind n'est pas conçu pour être
+ * utilisé avec un préprocesseur Sass : `@import "tailwindcss"` ne doit pas
+ * passer par le pipeline Sass. Les styles propres du projet vivent dans
+ * src/styles/main.scss (partials par composant, convention PO §3).
+ */

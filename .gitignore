@@ -1,0 +1,33 @@
+# Dépendances
+node_modules/
+vendor/
+
+# Environnement
+.env
+.env.*.local
+!.env.example
+
+# Laravel
+/interflo-api/storage/*.key
+/interflo-api/public/storage
+/interflo-api/bootstrap/cache/*
+!/interflo-api/bootstrap/cache/.gitkeep
+
+# React Native
+*.jsbundle
+.expo/
+android/app/build/
+ios/Pods/
+
+# Build
+dist/
+build/
+*.log
+
+# Outils
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+coverage/
+.phpunit.result.cache
