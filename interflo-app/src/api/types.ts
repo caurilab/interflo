@@ -72,11 +72,18 @@ export type PlayRound = {
  */
 export type PlayState =
   /** Rien à jouer : pas de session attachée active ou aucun thème. */
-  | { state: 'idle'; server_time: string }
+  | {
+      state: 'idle';
+      server_time: string;
+      population: string;
+      session_id: number | null;
+    }
   /** Entre deux manches (I-2) : thème courant, numéro de la dernière manche. */
   | {
       state: 'waiting';
       server_time: string;
+      population: string;
+      session_id: number;
       theme: PlayThemeRef;
       round_number: number | null;
     }
@@ -84,6 +91,8 @@ export type PlayState =
   | {
       state: 'question';
       server_time: string;
+      population: string;
+      session_id: number;
       theme: PlayThemeRef;
       round: PlayRound;
     }
@@ -91,16 +100,26 @@ export type PlayState =
   | {
       state: 'answered';
       server_time: string;
+      population: string;
+      session_id: number;
       theme: PlayThemeRef;
       round_number: number;
       correct: boolean;
     }
   /** Verrouillé jusqu'à la fin du thème (EX-32) — spectateur, pas humilié (M-4). */
-  | { state: 'locked'; server_time: string; theme: PlayThemeRef }
+  | {
+      state: 'locked';
+      server_time: string;
+      population: string;
+      session_id: number;
+      theme: PlayThemeRef;
+    }
   /** Fin de partie (I-28) : SON bit winner, pas la liste des gagnants. */
   | {
       state: 'finished';
       server_time: string;
+      population: string;
+      session_id: number;
       theme: PlayThemeRef;
       winner: boolean;
     };

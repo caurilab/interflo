@@ -44,8 +44,19 @@ class PlayerGameStateService
         $serverTime = now()->toISOString();
 
         $attachment = $player->activePlayerSession;
+        // Population et session du joueur : exposées pour que le client
+        // construise le nom du canal temps réel (D-002 §4.1 :
+        // `session.{sessionId}.{population}`). Le polling reste le transport
+        // dégradé (D-1) ; le push Reverb est un accélérateur de latence.
+        $population = $player->population;
+        $sessionId = $attachment?->game_session_id;
         if ($attachment === null || $attachment->gameSession->hasEnded()) {
-            return ['state' => 'idle', 'server_time' => $serverTime];
+            return [
+                'state' => 'idle',
+                'server_time' => $serverTime,
+                'population' => $population,
+                'session_id' => $sessionId,
+            ];
         }
 
         $session = $attachment->gameSession;
@@ -59,7 +70,12 @@ class PlayerGameStateService
             ->first();
 
         if ($theme === null) {
-            return ['state' => 'idle', 'server_time' => $serverTime];
+            return [
+                'state' => 'idle',
+                'server_time' => $serverTime,
+                'population' => $population,
+                'session_id' => $sessionId,
+            ];
         }
 
         // Fin de partie (I-28) : le joueur sait s'il gagne — un bit, pas la
@@ -68,6 +84,8 @@ class PlayerGameStateService
             return [
                 'state' => 'finished',
                 'server_time' => $serverTime,
+                'population' => $population,
+                'session_id' => $sessionId,
                 'theme' => ['id' => $theme->id, 'title' => $theme->title],
                 'winner' => $theme->winners()->where('player_id', $player->id)->exists(),
             ];
@@ -78,6 +96,8 @@ class PlayerGameStateService
             return [
                 'state' => 'locked',
                 'server_time' => $serverTime,
+                'population' => $population,
+                'session_id' => $sessionId,
                 'theme' => ['id' => $theme->id, 'title' => $theme->title],
             ];
         }
@@ -90,6 +110,8 @@ class PlayerGameStateService
             return [
                 'state' => 'waiting',
                 'server_time' => $serverTime,
+                'population' => $population,
+                'session_id' => $sessionId,
                 'theme' => ['id' => $theme->id, 'title' => $theme->title],
                 'round_number' => $round?->round_number,
             ];
@@ -109,6 +131,8 @@ class PlayerGameStateService
             return [
                 'state' => 'answered',
                 'server_time' => $serverTime,
+                'population' => $population,
+                'session_id' => $sessionId,
                 'theme' => ['id' => $theme->id, 'title' => $theme->title],
                 'round_number' => $round->round_number,
                 // Son propre verdict, un bit (R-5) — jamais la bonne réponse.
@@ -122,6 +146,8 @@ class PlayerGameStateService
         return [
             'state' => 'question',
             'server_time' => $serverTime,
+            'population' => $population,
+            'session_id' => $sessionId,
             'theme' => ['id' => $theme->id, 'title' => $theme->title],
             'round' => [
                 'id' => $round->id,

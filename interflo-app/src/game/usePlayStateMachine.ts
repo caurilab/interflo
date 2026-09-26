@@ -26,6 +26,7 @@ import { ApiError } from '../api/client';
 import { getPlayState, submitRoundAnswer } from '../api/endpoints';
 import type { PlayRound, PlayState } from '../api/types';
 import { DEFAULTS } from '../config/gameConfig';
+import { createEcho, populationChannelName } from '../realtime/echo';
 import { clearToken, getStoredToken } from '../storage/authToken';
 import { ServerClock } from './clockSync';
 
@@ -92,6 +93,10 @@ export function usePlayStateMachine(onAuthLost: () => void): PlayMachine {
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | null = null;
     let inFlight = false;
+    // Transport temps réel (D-002 §4.1) : Echo/WebSocket, accélérateur de
+    // latence. Null tant qu'aucune session n'est connue.
+    let echo: ReturnType<typeof createEcho> | null = null;
+    let channelName: string | null = null;
 
     const poll = async () => {
       if (cancelled || inFlight) {
@@ -147,6 +152,9 @@ export function usePlayStateMachine(onAuthLost: () => void): PlayMachine {
             return response.data;
           });
           setFailureCount(0);
+          // Une fois session + population connues, s'abonne au canal de la
+          // population (le push `round.opened` déclenchera un poll immédiat).
+          ensureSubscription(response.data);
         }
       } catch (error) {
         if (cancelled) {
@@ -170,6 +178,33 @@ export function usePlayStateMachine(onAuthLost: () => void): PlayMachine {
       } finally {
         inFlight = false;
       }
+    };
+
+    /**
+     * S'abonne au canal temps réel de la population du joueur (D-002 §4.1).
+     * Idempotent : ne ré-abonne pas si le canal n'a pas changé. À la
+     * réception du push `round.opened`, déclenche un poll immédiat — l'état
+     * serveur reste la source de vérité (served_at/EX-20 posé côté serveur),
+     * le push n'est qu'un accélérateur de latence (D-1 : le polling reste).
+     */
+    const ensureSubscription = (data: PlayState): void => {
+      if (cancelled || data.session_id === null) {
+        return;
+      }
+      const name = populationChannelName(data.session_id, data.population);
+      if (name === channelName) {
+        return;
+      }
+      if (echo === null) {
+        echo = createEcho();
+      }
+      if (channelName !== null) {
+        echo.leaveChannel(channelName);
+      }
+      echo.channel(name).listen('.round.opened', () => {
+        void poll();
+      });
+      channelName = name;
     };
 
     const scheduleNext = () => {
@@ -208,6 +243,13 @@ export function usePlayStateMachine(onAuthLost: () => void): PlayMachine {
       subscription.remove();
       if (timer !== null) {
         clearTimeout(timer);
+      }
+      // Nettoyage Reverb : quitter le canal puis fermer la connexion.
+      if (echo !== null) {
+        if (channelName !== null) {
+          echo.leaveChannel(channelName);
+        }
+        echo.disconnect();
       }
     };
   }, [handleAuthFailure]);
@@ -318,6 +360,8 @@ export function usePlayStateMachine(onAuthLost: () => void): PlayMachine {
       ? {
           state: 'answered',
           server_time: playState.server_time,
+          population: playState.population,
+          session_id: playState.session_id,
           theme: playState.theme,
           round_number: playState.round.round_number,
           correct: localVerdict.correct,

@@ -18,3 +18,22 @@ export const API_CONFIG = {
    */
   requestTimeoutMs: 10_000,
 } as const;
+
+/**
+ * Configuration du transport temps réel Reverb (D-002 §4.1).
+ *
+ * ⚠️ POINT DE DÉPART DEV : la clé `key` est l'identifiant PUBLIC de l'app
+ * Reverb (REVERB_APP_KEY côté API) — pas un secret, elle voyage dans l'URL
+ * de la connexion. Elle est générée par `php artisan reverb:install` et doit
+ * rester alignée avec `.env` de l'API. En production, elle viendra d'une
+ * configuration exposée par l'API (TODO), pas d'une valeur en dur.
+ */
+export const REVERB_CONFIG = {
+  key: 'zwipvzkreqbtb5avs1bm',
+  /** Hôte du serveur Reverb. `localhost` = machine hôte (le simulateur la partage). */
+  host: 'localhost',
+  port: 8080,
+  /** ws:// en local (scheme http) ; wss:// en production. */
+  forceTLS: false,
+  enabledTransports: ['ws', 'wss'],
+} as const;
