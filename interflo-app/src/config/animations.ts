@@ -108,4 +108,26 @@ export const MOTION = {
     maxScale: 2.2,
     maxOpacity: 0.55,
   },
+
+  /**
+   * Confettis de célébration (ConfettiBurst) — particules qui s'éparpillent
+   * depuis le point de célébration en tombant (gravité), en tournant et en
+   * s'estompant. Pur transform + opacity (worklets), aucune ombre ni flou —
+   * entrée de gamme. Coup unique au montage, pas de boucle.
+   */
+  confetti: {
+    particleCount: 36,
+    minDurationMs: 1000,
+    maxDurationMs: 1800,
+    minDelayMs: 0,
+    maxDelayMs: 220,
+    /** Étendue horizontale max (px). */
+    spread: 150,
+    /** Chute verticale (gravité), px. */
+    fall: 240,
+    minSize: 6,
+    maxSize: 12,
+    maxRotationDeg: 360,
+    maxOpacity: 0.95,
+  },
 } as const;

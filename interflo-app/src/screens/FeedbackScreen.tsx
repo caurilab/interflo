@@ -10,6 +10,7 @@ import Animated, {
 import { GradientView } from '../components/GradientView';
 import { EnergyBackground } from '../components/EnergyBackground';
 import { ShockwaveRings } from '../components/ShockwaveRings';
+import { ConfettiBurst } from '../components/ConfettiBurst';
 // Tokens couleur — source unique (pastille de verdict)
 import colors from '../config/colors';
 import { MOTION } from '../config/animations';
@@ -54,6 +55,7 @@ export function FeedbackScreen({ isCorrect }: FeedbackScreenProps) {
   return (
     <SafeAreaView className="flex-1 bg-surface">
       <EnergyBackground intensity={isCorrect ? 'celebrate' : 'calm'} />
+      {isCorrect && <ConfettiBurst />}
       <View className="flex-1 items-center justify-center px-6">
         {isCorrect ? (
           /* Célébration énergique — dégradé d'énergie, entrée en spring */

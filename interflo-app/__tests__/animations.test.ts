@@ -60,4 +60,12 @@ describe('MOTION — constantes d\'animation (D-001 §3)', () => {
     expect(MOTION.shockwave.durationMs).toBeLessThanOrEqual(1500);
     expect(MOTION.shockwave.maxOpacity).toBeLessThanOrEqual(0.7);
   });
+
+  it('les confettis sont un coup unique, bref et peu nombreux (entrée de gamme)', () => {
+    expect(MOTION.confetti.particleCount).toBeLessThanOrEqual(60);
+    expect(MOTION.confetti.maxDurationMs).toBeLessThanOrEqual(2500);
+    expect(MOTION.confetti.maxOpacity).toBeLessThanOrEqual(1);
+    expect(MOTION.confetti.spread).toBeLessThanOrEqual(240);
+    expect(MOTION.confetti.fall).toBeLessThanOrEqual(400);
+  });
 });

@@ -16,6 +16,7 @@ import Animated, {
 import { GradientView } from '../components/GradientView';
 import { EnergyBackground } from '../components/EnergyBackground';
 import { ShockwaveRings } from '../components/ShockwaveRings';
+import { ConfettiBurst } from '../components/ConfettiBurst';
 import { MOTION } from '../config/animations';
 // Tokens couleur — source unique (anneaux de célébration)
 import colors from '../config/colors';
@@ -77,6 +78,7 @@ export function SessionEndScreen({ winner, themeTitle }: SessionEndScreenProps) 
   return (
     <SafeAreaView className="flex-1 bg-surface">
       <EnergyBackground intensity={winner ? 'celebrate' : 'calm'} />
+      {winner && <ConfettiBurst count={60} />}
       <View className="flex-1 items-center justify-center px-6">
         {winner ? (
           /* Gagnant — moment de fête : spring + cascade + respiration */
