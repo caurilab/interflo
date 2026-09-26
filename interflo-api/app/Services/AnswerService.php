@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Exceptions\AnswerRejectedException;
+use App\Jobs\PersistAnswer;
 use App\Models\GameRound;
 use App\Models\Player;
 use App\Models\PlayerSession;
 use App\Models\RoundPlayerState;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Soumission d'une réponse au format élimination.
@@ -44,6 +44,7 @@ class AnswerService
 {
     public function __construct(
         private readonly EliminationSurvivorService $survivors,
+        private readonly GameStateRedis $redis,
     ) {}
 
     /**
@@ -156,16 +157,21 @@ class AnswerService
         // jamais la base.
         $correct = $answerIndex === $round->question->correct_index;
 
-        // ⚠️ Persistance PROVISOIRE de la réponse (docs/07 §5) — voir le
-        // docblock de classe.
-        DB::transaction(function () use ($state, $answerIndex, $correct): void {
-            $state->update([
-                'answered_at' => now(),
-                'answer_index' => $answerIndex,
-                'is_correct' => $correct,
-                'rejected_reason' => null,
-            ]);
-        });
+        // État chaud (D-002 §4.3) : la réponse est écrite dans Redis — unicité
+        // atomique (HSETNX) + enregistrement — puis flushée vers PostgreSQL par
+        // un job en file. PostgreSQL n'est plus dans le chemin critique du pic
+        // d'écriture (en test, QUEUE_CONNECTION=sync → job synchrone).
+        if (! $this->redis->recordAnswer($round->id, $player->id, $answerIndex, $correct)) {
+            throw AnswerRejectedException::alreadyAnswered();
+        }
+
+        PersistAnswer::dispatch(
+            $round->id,
+            $player->id,
+            $answerIndex,
+            $correct,
+            now()->toISOString(),
+        );
 
         // Retour individuel : UN BIT (R-5 / I-29), jamais la bonne réponse.
         return ['correct' => $correct];
