@@ -10,10 +10,13 @@ import { RootNavigator } from './src/navigation/RootNavigator';
 import colors from './src/config/colors';
 
 /**
- * Interflo — application joueur (scaffolding).
+ * Interflo — application joueur.
  *
- * ⚠️ Aucune logique de jeu connectée, aucun appel réseau :
- * le contrat d'API n'existe pas encore.
+ * Le parcours de jeu au format élimination est câblé de bout en bout
+ * (appairage → OTP → jeu → feedback → éliminé → fin de partie) contre
+ * l'API réelle. Transport : polling HTTP provisoire (session 4), en
+ * attente de la couche temps réel (D-002, proposée).
+ *
  * TODO(I-43) : le SDK d'empreinte audio ACRCloud se branchera ici plus tard
  * (format buzzer uniquement, mode mesuré désactivé au démarrage — I-25).
  * Le micro ne s'écoutera jamais en continu (I-22) et son refus n'empêchera
