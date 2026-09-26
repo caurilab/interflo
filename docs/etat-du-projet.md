@@ -1,7 +1,7 @@
 # État du projet
 
 > **Dernière mise à jour** : 2026-09-26
-> **Statut global** : 🔧 DÉVELOPPEMENT INITIAL. Format **élimination** jouable de bout en bout (API + app mobile + console animateur). Architecture temps réel **proposée** (D-002), non validée.
+> **Statut global** : 🔧 DÉVELOPPEMENT INITIAL. Format **élimination** jouable de bout en bout + **architecture temps réel implémentée** (D-002, 4 incréments : Reverb, clients Echo, Redis autoritaire). Reste le **test de charge** (D-002 §7).
 
 ---
 
@@ -18,7 +18,7 @@ Le cadrage produit est **abouti sur la mécanique de jeu** et **ouvert sur l'inf
 | Stack | ✅ Tranché (une réserve : stylisation React Native) |
 | Chaîne de mesure — fournisseur | ✅ Choisi (ACRCloud premium) |
 | Chaîne de mesure — performances réelles | ❌ **Aucun test** |
-| Couche temps réel | ❌ **Non conçue** |
+| Couche temps réel | 🟡 **Implémentée** (D-002) — non validée par test de charge |
 | Modèle de données | ❌ Squelette seulement |
 | Contrat d'API | ❌ Aucune route définie |
 | Boîtier de plateau | ❌ Rien d'arbitré |
@@ -117,3 +117,4 @@ Deux corrections ont été versées au cadrage le même jour :
 | 2026-09-25 | **Session 3** : tableau de bord Filament (tenants + config de jeu I-25/I-28/I-31/I-40, émissions, sessions avec cycle de vie I-16, page seuils en lecture seule — 58 tests verts). Logo officiel intégré sur les trois surfaces (wordmark blanc → thème sombre). **D-001 : direction visuelle « fun, gaming, mais corporate »** tranchée et appliquée (mobile + consoles web + primaire magenta Filament). Abonnement ACRCloud confirmé actif — identifiants à demander au moment de la chaîne de mesure. Rapport `rapports/2026-09-25-session-3-filament-logo-design.md`. |
 | 2026-09-25 | **Session 4** : **format élimination jouable de bout en bout** — moteur API (fenêtre personnelle EX-20, plancher I-30, verrouillage EX-32, fin de partie I-28, CA-07 prouvé, 105 tests verts), app mobile câblée (E2E complet sur simulateur), console animateur câblée (pilotage réel, F-1/F-2 démontrés par coupure). Amendement D-001 §3 : animations et effets partout (mobile : worklets Reanimated ; web : CSS pur, zéro délai sur les gestes de direct). ⚠️ Auth animateur provisoire (X-Pilot-Token) à trancher. Rapport `rapports/2026-09-25-session-4-elimination-animations.md`. |
 | 2026-09-26 | **Reprise (après Kimi)** : `git init` du dépôt (aucun versionnement jusqu'ici) + commit initial. Mise à jour des fichiers racine périmés (`README`, `Makefile`, `.env.example`, `docker-compose.yml`) qui disaient encore « zéro code » et portaient d'anciens noms de variables (`GAME_*`) — alignés sur l'état réel et sur `config/interflo.php` (`INTERFLO_*`). |
+| 2026-09-26 | **Session 6** : architecture temps réel D-002 implémentée de bout en bout — Reverb + `RoundOpened` (push joueur), client Echo mobile (abonnement + poll immédiat, fallback D-1), canal pilote + console web Echo (`PilotStateChanged`), **Redis autoritaire** au pic (HSETNX unicité + flush asynchrone `PersistAnswer`). Octane/FrankenPHP installé. Test de charge préparé (`ops/load-test/`). **D-003** (auth animateur) proposée. 112 tests API. Rapport `rapports/2026-09-26-session-6-d002-temps-reel.md`. |
