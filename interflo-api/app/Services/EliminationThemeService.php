@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Events\RoundOpened;
 use App\Models\GameRound;
 use App\Models\GameSession;
 use App\Models\GameTheme;
@@ -158,6 +159,13 @@ class EliminationThemeService
             'window_opened_at' => now(),
             'status' => GameRound::STATUS_OPEN,
         ]);
+
+        // Push temps réel (D-002 §4.1) : l'ouverture de la fenêtre et la
+        // question sont poussées à la population de la session. Le polling
+        // reste le transport dégradé (D-1). En test : BROADCAST_CONNECTION=null
+        // (phpunit.xml) → no-op, aucun Reverb requis.
+        $round->load('question');
+        broadcast(new RoundOpened($theme, $round));
 
         return $round;
     }
