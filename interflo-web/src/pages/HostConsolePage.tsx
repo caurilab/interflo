@@ -13,11 +13,12 @@ import {
   getPilotThemeId,
   getPilotToken,
   getThemeState,
+  listQuestions,
   openRound,
   setPilotThemeId,
   setPilotToken,
 } from '../api/pilot'
-import type { PilotThemeState, PilotWinner, Population } from '../api/pilot'
+import type { PilotQuestion, PilotThemeState, PilotWinner, Population } from '../api/pilot'
 import { apiConfig } from '../config/apiConfig'
 import { consoleConfig } from '../config/consoleConfig'
 import { createEcho, pilotChannelName } from '../realtime/echo'
@@ -104,6 +105,9 @@ function HostConsoleLive({ token, onResetToken }: { token: string; onResetToken:
   const [newFirstQuestionId, setNewFirstQuestionId] = useState('')
   const [createInFlight, setCreateInFlight] = useState(false)
 
+  // Banque de questions validées (sélecteur, remplace le champ d'id manuel).
+  const [questions, setQuestions] = useState<PilotQuestion[]>([])
+
   const inFlightRef = useRef(false)
 
   /** Traduit un échec d'appel en état de lien + message d'alerte. */
@@ -152,6 +156,15 @@ function HostConsoleLive({ token, onResetToken }: { token: string; onResetToken:
     }
   }, [themeId, token])
 
+  /** Recharge la banque de questions validées (confort de sélection). */
+  const reloadQuestions = useCallback(async () => {
+    try {
+      setQuestions(await listQuestions(token))
+    } catch {
+      setQuestions([])
+    }
+  }, [token])
+
   // Polling sobre de l'état du thème — transport PROVISOIRE en attendant
   // l'ADR temps réel (intervalle paramétrable, point de départ non validé).
   useEffect(() => {
@@ -165,6 +178,14 @@ function HostConsoleLive({ token, onResetToken }: { token: string; onResetToken:
       clearInterval(timer)
     }
   }, [themeId, refreshState])
+
+  // Recharge la banque de questions quand le formulaire de création s'affiche.
+  useEffect(() => {
+    if (themeId !== null) return
+    // Lecture différée d'un tick : hors du corps synchrone de l'effet.
+    const timer = setTimeout(() => void reloadQuestions(), 0)
+    return () => clearTimeout(timer)
+  }, [themeId, reloadQuestions])
 
   const connected = linkStatus === 'online'
   const currentRound = themeState?.current_round ?? null
@@ -225,6 +246,7 @@ function HostConsoleLive({ token, onResetToken }: { token: string; onResetToken:
         if (themeId !== null && Number.isInteger(questionId) && questionId > 0) {
           void runAction(() => createRound(token, themeId, questionId))
           setNextQuestionId('')
+          void reloadQuestions()
         }
         break
       }
@@ -257,6 +279,7 @@ function HostConsoleLive({ token, onResetToken }: { token: string; onResetToken:
         setWinners(null)
         setPilotThemeId(theme.id)
         setThemeId(theme.id)
+        void reloadQuestions()
       })
       .catch(handleApiFailure)
       .finally(() => setCreateInFlight(false))
@@ -389,19 +412,24 @@ function HostConsoleLive({ token, onResetToken }: { token: string; onResetToken:
               <span className="console-panel__title text-sm font-semibold uppercase tracking-widest">
                 {t('hostConsole.createTheme.fieldFirstQuestionId')}
               </span>
-              <input
-                type="number"
-                min={1}
-                inputMode="numeric"
+              <select
                 value={newFirstQuestionId}
                 onChange={(event) => setNewFirstQuestionId(event.target.value)}
                 className="console-input min-h-14 rounded-xl px-4 text-lg"
-              />
-              {/* Manque assumé du contrat : aucune route ne liste les questions
-                  validées — l'id se lit dans Filament (banque de questions). */}
-              <span className="text-sm text-neutral-400">
-                {t('hostConsole.createTheme.questionIdHint')}
-              </span>
+              >
+                <option value="">
+                  {questions.filter((q) => q.round_number === 1).length === 0
+                    ? t('hostConsole.questionPicker.empty')
+                    : t('hostConsole.questionPicker.placeholder')}
+                </option>
+                {questions
+                  .filter((q) => q.round_number === 1)
+                  .map((q) => (
+                    <option key={q.id} value={String(q.id)}>
+                      {q.body}
+                    </option>
+                  ))}
+              </select>
             </label>
 
             <button
@@ -591,18 +619,25 @@ function HostConsoleLive({ token, onResetToken }: { token: string; onResetToken:
               <span className="console-panel__title text-sm font-semibold uppercase tracking-widest">
                 {t('hostConsole.confirm.nextRound.questionIdLabel')}
               </span>
-              <input
-                type="number"
-                min={1}
-                inputMode="numeric"
+              <select
                 value={nextQuestionId}
                 onChange={(event) => setNextQuestionId(event.target.value)}
                 autoFocus
                 className="console-input min-h-14 rounded-xl px-4 text-lg"
-              />
-              <span className="text-sm text-neutral-400">
-                {t('hostConsole.createTheme.questionIdHint')}
-              </span>
+              >
+                <option value="">
+                  {questions.filter((q) => q.round_number === (currentRound?.round_number ?? 0) + 1).length === 0
+                    ? t('hostConsole.questionPicker.empty')
+                    : t('hostConsole.questionPicker.placeholder')}
+                </option>
+                {questions
+                  .filter((q) => q.round_number === (currentRound?.round_number ?? 0) + 1)
+                  .map((q) => (
+                    <option key={q.id} value={String(q.id)}>
+                      {q.body}
+                    </option>
+                  ))}
+              </select>
             </label>
           )}
         </ConfirmDialog>

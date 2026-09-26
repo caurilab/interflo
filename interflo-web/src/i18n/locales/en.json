@@ -76,10 +76,13 @@
       "intro": "Creates the theme and schedules its first round. The theme targets ONE population (I-1) — studio or home, never both.",
       "fieldTitle": "Theme title",
       "fieldPopulation": "Population",
-      "fieldFirstQuestionId": "Validated question id (round 1)",
-      "questionIdHint": "Question validated in the Filament back-office (EX-40). ⚠️ Contract gap: no route lists validated questions — the id is read in Filament.",
+      "fieldFirstQuestionId": "Round 1 question",
       "submit": "CREATE THE GAME",
       "submitting": "Creating…"
+    },
+    "questionPicker": {
+      "placeholder": "Select a question…",
+      "empty": "No validated question available"
     },
     "gameResult": {
       "title": "Game result",
@@ -123,7 +126,7 @@
       "nextRound": {
         "title": "Schedule the next round?",
         "body": "Reserved for survivors (EX-32): nobody joins a game midway. The current window must be closed.",
-        "questionIdLabel": "Validated question id for this round",
+        "questionIdLabel": "Validated question for this round",
         "confirm": "Schedule"
       },
       "finishGame": {

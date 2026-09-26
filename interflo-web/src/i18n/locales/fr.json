@@ -76,10 +76,13 @@
       "intro": "Crée le thème et programme sa première manche. Le thème porte UNE population (I-1) — studio ou domicile, jamais les deux.",
       "fieldTitle": "Titre du thème",
       "fieldPopulation": "Population",
-      "fieldFirstQuestionId": "Id de la question validée (manche 1)",
-      "questionIdHint": "Question validée dans le back-office Filament (EX-40). ⚠️ Manque du contrat : aucune route ne liste les questions validées — l’id se lit dans Filament.",
+      "fieldFirstQuestionId": "Question de la manche 1",
       "submit": "CRÉER LA PARTIE",
       "submitting": "Création en cours…"
+    },
+    "questionPicker": {
+      "placeholder": "Sélectionner une question…",
+      "empty": "Aucune question validée disponible"
     },
     "gameResult": {
       "title": "Résultat de la partie",
@@ -123,7 +126,7 @@
       "nextRound": {
         "title": "Programmer la manche suivante ?",
         "body": "Réservée aux survivants (EX-32) : personne ne rejoint une partie en cours de route. La fenêtre courante doit être fermée.",
-        "questionIdLabel": "Id de la question validée pour cette manche",
+        "questionIdLabel": "Question validée pour cette manche",
         "confirm": "Programmer"
       },
       "finishGame": {

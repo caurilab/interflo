@@ -79,6 +79,14 @@ export interface PilotWinner {
   rank: number | null
 }
 
+/** Question de la banque, listée pour la sélection de manche (jamais correct_index, INV-2). */
+export interface PilotQuestion {
+  id: number
+  round_number: number
+  body: string
+  source: string
+}
+
 // ─── Erreur typée ───────────────────────────────────────────────────────────
 
 export class PilotApiError extends Error {
@@ -228,4 +236,10 @@ export function getThemeState(token: string, themeId: number): Promise<PilotThem
 /** POST pilot/themes/{theme}/finish — fin de partie (I-28), idempotent. */
 export function finishTheme(token: string, themeId: number): Promise<PilotWinner[]> {
   return request<PilotWinner[]>(`/pilot/themes/${themeId}/finish`, { method: 'POST', token })
+}
+
+/** GET pilot/questions — banque de questions validées (option round_number). */
+export function listQuestions(token: string, roundNumber?: number): Promise<PilotQuestion[]> {
+  const query = roundNumber !== undefined ? `?round_number=${roundNumber}` : ''
+  return request<PilotQuestion[]>(`/pilot/questions${query}`, { token })
 }

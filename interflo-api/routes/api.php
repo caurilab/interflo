@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\PairingController;
 use App\Http\Controllers\Api\PhoneVerificationController;
+use App\Http\Controllers\Api\Pilot\PilotQuestionController;
 use App\Http\Controllers\Api\Pilot\PilotRoundController;
 use App\Http\Controllers\Api\Pilot\PilotThemeController;
 use App\Http\Controllers\Api\PlayStateController;
@@ -60,5 +61,7 @@ Route::prefix('v1')->group(function (): void {
         Route::post('rounds', [PilotRoundController::class, 'store']);
         Route::post('rounds/{round}/open', [PilotRoundController::class, 'open']);
         Route::post('rounds/{round}/close', [PilotRoundController::class, 'close']);
+        // Banque de questions diffusable (sélection de manche, jamais correct_index).
+        Route::get('questions', [PilotQuestionController::class, 'index']);
     });
 });
