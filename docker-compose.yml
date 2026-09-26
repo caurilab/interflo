@@ -1,19 +1,48 @@
 # =============================================================
 # Interflo — composition de développement
 #
-# ⚠️ SQUELETTE VOLONTAIREMENT INCOMPLET.
+# ⚠️ Composition LOCALE uniquement. Le déploiement de la couche
+#    temps réel (Reverb, Octane, cluster Redis) relève de la
+#    décision D-002 (PROPOSÉE, non validée) et n'est pas
+#    représenté ici.
 #
-# La couche temps réel n'est pas conçue (docs/04-architecture.md
-# §5), et deux profils de charge cohabitent. Choisir un service
-# de transport temps réel maintenant reviendrait à graver une
-# supposition.
+# PostgreSQL 17 est la base décidée (session 2, I-35 : base
+# séparée de BOS). Redis est préparé : il sera nécessaire à la
+# couche temps réel (D-002) mais n'est pas encore consommé par le
+# code (cache et file d'attente aujourd'hui sur base de données).
 #
-# Le moteur de base de données lui-même n'est pas arrêté pour
-# Interflo : ne pas le recopier de BOS par défaut — le profil
-# d'écriture (pics massifs et courts) n'a rien à voir.
-#
-# Ce fichier sera complété au scaffolding, après la décision
-# d'architecture temps réel.
+# ⚠️ Le flux de dev actuel utilise un PostgreSQL Homebrew local
+#    (utilisateur du système, confiance). `docker compose up`
+#    entre en conflit sur le port 5432 : arrêter Homebrew
+#    (brew services stop postgresql@17) OU changer DB_PORT.
 # =============================================================
 
-services: {}
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: interflo-postgres
+    environment:
+      POSTGRES_DB: interflo
+      POSTGRES_USER: interflo
+      POSTGRES_PASSWORD: interflo
+    ports:
+      - "5432:5432"
+    volumes:
+      - interflo_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U interflo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: interflo-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - interflo_redisdata:/data
+
+volumes:
+  interflo_pgdata:
+  interflo_redisdata:

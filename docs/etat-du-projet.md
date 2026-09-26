@@ -1,7 +1,7 @@
 # État du projet
 
-> **Dernière mise à jour** : 2026-09-25
-> **Statut global** : 🔧 DÉVELOPPEMENT INITIAL. Scaffolding des trois surfaces logicielles fait le 2026-09-25 (rapport `rapports/2026-09-25-session-1-scaffolding-et-conventions.md`). **Aucune logique métier.**
+> **Dernière mise à jour** : 2026-09-26
+> **Statut global** : 🔧 DÉVELOPPEMENT INITIAL. Format **élimination** jouable de bout en bout (API + app mobile + console animateur). Architecture temps réel **proposée** (D-002), non validée.
 
 ---
 
@@ -116,3 +116,4 @@ Deux corrections ont été versées au cadrage le même jour :
 | 2026-09-25 | **Session 2** : bascule PostgreSQL 17 (bases `interflo`/`interflo_test`), vérification téléphone par OTP (Sanctum, provider SMS non choisi — défaut log), appairage QR/code court avec rotation (I-14/I-15/I-18), une session active garantie en base (I-17). 7 tables PROVISOIRES (docs/07 §5 respecté : aucune entité de jeu). Bascule pnpm (web + mobile). App mobile buildée et lancée sur le simulateur iPhone 16 du PO, parcours d'appairage validé de bout en bout. 37 tests API verts. Rapport `rapports/2026-09-25-session-2-appairage-otp-postgresql.md`. |
 | 2026-09-25 | **Session 3** : tableau de bord Filament (tenants + config de jeu I-25/I-28/I-31/I-40, émissions, sessions avec cycle de vie I-16, page seuils en lecture seule — 58 tests verts). Logo officiel intégré sur les trois surfaces (wordmark blanc → thème sombre). **D-001 : direction visuelle « fun, gaming, mais corporate »** tranchée et appliquée (mobile + consoles web + primaire magenta Filament). Abonnement ACRCloud confirmé actif — identifiants à demander au moment de la chaîne de mesure. Rapport `rapports/2026-09-25-session-3-filament-logo-design.md`. |
 | 2026-09-25 | **Session 4** : **format élimination jouable de bout en bout** — moteur API (fenêtre personnelle EX-20, plancher I-30, verrouillage EX-32, fin de partie I-28, CA-07 prouvé, 105 tests verts), app mobile câblée (E2E complet sur simulateur), console animateur câblée (pilotage réel, F-1/F-2 démontrés par coupure). Amendement D-001 §3 : animations et effets partout (mobile : worklets Reanimated ; web : CSS pur, zéro délai sur les gestes de direct). ⚠️ Auth animateur provisoire (X-Pilot-Token) à trancher. Rapport `rapports/2026-09-25-session-4-elimination-animations.md`. |
+| 2026-09-26 | **Reprise (après Kimi)** : `git init` du dépôt (aucun versionnement jusqu'ici) + commit initial. Mise à jour des fichiers racine périmés (`README`, `Makefile`, `.env.example`, `docker-compose.yml`) qui disaient encore « zéro code » et portaient d'anciens noms de variables (`GAME_*`) — alignés sur l'état réel et sur `config/interflo.php` (`INTERFLO_*`). |

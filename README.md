@@ -4,13 +4,32 @@ Application de participation en direct aux jeux d'une émission de télévision 
 
 Produit de la suite **Tvflo** (Cauri Lab), techniquement séparé de Tvflo BOS.
 
-> **Statut : cadrage.** Zéro code. Tout le contenu de ce dépôt est documentaire.
+> **Statut : 🔧 développement initial.** Le format **élimination** est jouable de bout en bout (API Laravel + app mobile React Native + console animateur web). L'architecture temps réel est **proposée** (D-002), pas encore validée. Détail et blocages dans `docs/etat-du-projet.md`.
 
 ---
 
 ## Démarrer
 
-Lire **`PROMPT-DEMARRAGE.md`**, puis **`docs/INTERFLO_PRODUCT.md`**.
+### Comprendre le produit
+
+Lire **`PROMPT-DEMARRAGE.md`**, puis **`docs/INTERFLO_PRODUCT.md`** (source d'autorité).
+
+### Lancer en local
+
+| Cible | Commande |
+|---|---|
+| Installer les dépendances | `make install` |
+| Tests API | `make api-test` |
+| Serveur API | `make api-serve` |
+| Console web (dev) | `make web-dev` |
+| App iOS | `make app-ios` |
+| Aide complète | `make help` |
+
+Chaque surface se lance aussi directement :
+
+- **API** : `cd interflo-api && php artisan serve`
+- **Web** : `cd interflo-web && pnpm dev`
+- **Mobile** : `cd interflo-app && pnpm ios`
 
 ---
 
