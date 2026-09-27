@@ -1,4 +1,22 @@
 {
+  "expo": {
+    "name": "Interflo",
+    "slug": "interflo",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "scheme": "interflo",
+    "userInterfaceStyle": "dark",
+    "platforms": ["ios", "android"],
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.interflo.app"
+    },
+    "android": {
+      "package": "com.interflo.app"
+    }
+  },
   "name": "Interflo",
   "displayName": "Interflo"
 }
+
