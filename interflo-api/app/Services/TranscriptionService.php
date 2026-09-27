@@ -26,14 +26,17 @@ class TranscriptionService
      */
     public function transcribe(string $audioBytes, string $mimeType = 'audio/wav'): array
     {
-        $response = Http::withToken((string) config('deepgram.api_key'))
+        $response = Http::withHeaders([
+            // ⚠️ Deepgram attend « Token », PAS « Bearer » (withToken() enverrait Bearer).
+            'Authorization' => 'Token '.config('deepgram.api_key'),
+            'Content-Type' => $mimeType,
+        ])
             ->withQueryParameters([
                 'model' => config('deepgram.model'),
                 'language' => config('deepgram.language'),
                 'smart_format' => config('deepgram.smart_format') ? 'true' : 'false',
                 'punctuate' => config('deepgram.punctuate') ? 'true' : 'false',
             ])
-            ->withHeaders(['Content-Type' => $mimeType])
             ->withBody($audioBytes, $mimeType)
             ->timeout(60)
             ->post((string) config('deepgram.base_url').'/v1/listen');
