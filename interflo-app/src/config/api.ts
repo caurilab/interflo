@@ -15,7 +15,10 @@
  * (Reverb écoute déjà sur 0.0.0.0:8080). Si l'IP change (autre Wi-Fi),
  * mettre à jour DEV_HOST ci-dessous.
  */
-const DEV_HOST = '192.168.1.5';
+// IP LAN de la machine de dev, surchargeable via `EXPO_PUBLIC_API_HOST`
+// (fichier .env) : pratique quand l'IP change (autre Wi-Fi) sans toucher au
+// code. Retombe sur la valeur par défaut ci-dessous sinon.
+const DEV_HOST = process.env.EXPO_PUBLIC_API_HOST ?? '192.168.1.5';
 
 export const API_CONFIG = {
   /** Racine de l'API (sans suffixe /api/v1 : celui-ci vit dans les endpoints). */
