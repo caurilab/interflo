@@ -72,12 +72,14 @@
   "locked": {
     "title": "Éliminé pour ce thème",
     "theme": "« {{theme}} »",
-    "subtitle": "Bien joué d'être allé jusque-là ! Tu restes aux premières loges pour suivre la fin de la partie — le prochain thème t'offrira ta revanche."
+    "subtitle": "Bien joué d'être allé jusque-là ! Tu restes aux premières loges pour suivre la fin de la partie — le prochain thème t'offrira ta revanche.",
+    "quit": "Quitter"
   },
   "finished": {
     "winnerTitle": "Tu es gagnant !",
     "winnerSubtitle": "Bravo — tu remportes « {{theme}} » !",
     "loserTitle": "Partie terminée",
-    "loserSubtitle": "Merci d'avoir joué « {{theme}} » — la prochaine partie sera ta chance."
+    "loserSubtitle": "Merci d'avoir joué « {{theme}} » — la prochaine partie sera ta chance.",
+    "quit": "Quitter"
   }
 }

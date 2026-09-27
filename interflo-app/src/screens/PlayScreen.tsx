@@ -111,12 +111,28 @@ export function PlayScreen({ navigation, route }: Props) {
     content = <FeedbackScreen isCorrect={state.correct} />;
   } else if (state.state === 'locked') {
     // Éliminé pour ce thème (EX-32) — spectateur, ton encourageant (M-4).
+    // Quitter reste possible, mais discret : jamais un appel à partir.
     screenKey = 'locked';
-    content = <LockedScreen themeTitle={state.theme.title} />;
+    content = (
+      <LockedScreen
+        themeTitle={state.theme.title}
+        isLeaving={isLeaving}
+        quitFailed={quitFailed}
+        onQuit={handleQuit}
+      />
+    );
   } else {
     // finished (I-28) : SON bit winner, pas la liste des gagnants.
     screenKey = 'finished';
-    content = <SessionEndScreen winner={state.winner} themeTitle={state.theme.title} />;
+    content = (
+      <SessionEndScreen
+        winner={state.winner}
+        themeTitle={state.theme.title}
+        isLeaving={isLeaving}
+        quitFailed={quitFailed}
+        onQuit={handleQuit}
+      />
+    );
   }
 
   // Fondu croisé entre les états (D-001 §3) : l'écran sortant s'efface en

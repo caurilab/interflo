@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import Animated, {
@@ -26,6 +26,12 @@ type SessionEndScreenProps = {
   winner: boolean;
   /** Titre du thème terminé (charge play/state). */
   themeTitle: string;
+  /** Détachement en cours (bouton Quitter). */
+  isLeaving: boolean;
+  /** Échec du dernier détachement : la session reste attachée côté serveur. */
+  quitFailed: boolean;
+  /** Quitter la session (DELETE sessions/attach, idempotent côté serveur). */
+  onQuit: () => void;
 };
 
 /**
@@ -49,7 +55,7 @@ type SessionEndScreenProps = {
  * Le gel produit porte sur le CONTENU (placeholder) : ces animations ne
  * changent ni les textes ni la structure d'information.
  */
-export function SessionEndScreen({ winner, themeTitle }: SessionEndScreenProps) {
+export function SessionEndScreen({ winner, themeTitle, isLeaving, quitFailed, onQuit }: SessionEndScreenProps) {
   const { t } = useTranslation();
 
   // Respiration de la pastille gagnante — boucle lente, amplitude faible.
@@ -141,6 +147,25 @@ export function SessionEndScreen({ winner, themeTitle }: SessionEndScreenProps) 
         )}
         {/* TODO(produit) : classement final ? prochain rendez-vous ?
             À trancher par le PO (cadrage §16 q17). */}
+
+        {/* Quitter la session — la partie est finie (I-28). */}
+        <Pressable
+          onPress={onQuit}
+          disabled={isLeaving}
+          accessibilityRole="button"
+          className="mt-10 min-h-14 min-w-44 items-center justify-center rounded-xl border border-white/15 bg-surface-raised px-6 active:bg-surface-overlay"
+        >
+          {isLeaving ? (
+            <ActivityIndicator color={colors.white} />
+          ) : (
+            <Text className="text-lg font-bold text-white/80">{t('finished.quit')}</Text>
+          )}
+        </Pressable>
+        {quitFailed && (
+          <Text accessibilityLiveRegion="polite" className="mt-4 text-center text-base font-semibold text-cream">
+            {t('errors.generic')}
+          </Text>
+        )}
       </View>
     </SafeAreaView>
   );

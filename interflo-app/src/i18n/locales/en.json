@@ -72,12 +72,14 @@
   "locked": {
     "title": "Out for this theme",
     "theme": "\"{{theme}}\"",
-    "subtitle": "Well played making it this far! You keep a front-row seat to watch the end of the game — the next theme will be your chance for a rematch."
+    "subtitle": "Well played making it this far! You keep a front-row seat to watch the end of the game — the next theme will be your chance for a rematch.",
+    "quit": "Leave"
   },
   "finished": {
     "winnerTitle": "You're a winner!",
     "winnerSubtitle": "Congratulations — you win \"{{theme}}\"!",
     "loserTitle": "Game over",
-    "loserSubtitle": "Thanks for playing \"{{theme}}\" — the next game will be your chance."
+    "loserSubtitle": "Thanks for playing \"{{theme}}\" — the next game will be your chance.",
+    "quit": "Leave"
   }
 }

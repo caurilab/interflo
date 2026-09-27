@@ -1,14 +1,21 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import Animated, { FadeIn, FadeInUp, ZoomIn } from 'react-native-reanimated';
 import { MOTION } from '../config/animations';
 import { EnergyBackground } from '../components/EnergyBackground';
+import colors from '../config/colors';
 
 type LockedScreenProps = {
   /** Titre du thème pour lequel le joueur est éliminé (charge play/state). */
   themeTitle: string;
+  /** Détachement en cours (bouton Quitter). */
+  isLeaving: boolean;
+  /** Échec du dernier détachement : la session reste attachée côté serveur. */
+  quitFailed: boolean;
+  /** Quitter la session (DELETE sessions/attach, idempotent côté serveur). */
+  onQuit: () => void;
 };
 
 /**
@@ -27,7 +34,7 @@ type LockedScreenProps = {
  * thème (manches restantes en lecture seule ? simple message ?) n'est pas
  * spécifié dans 06-ux-ui.md — cet écran est le point de départ minimal.
  */
-export function LockedScreen({ themeTitle }: LockedScreenProps) {
+export function LockedScreen({ themeTitle, isLeaving, quitFailed, onQuit }: LockedScreenProps) {
   const { t } = useTranslation();
 
   return (
@@ -62,6 +69,30 @@ export function LockedScreen({ themeTitle }: LockedScreenProps) {
               </Text>
             </Animated.View>
           </View>
+        </Animated.View>
+
+        {/* Quitter — DISCRET, jamais un appel à partir (M-4) : le joueur
+            éliminé reste spectateur s'il le veut, mais garde le choix. */}
+        <Animated.View entering={FadeIn.delay(MOTION.cascade.subtitleMs).duration(240)}>
+          <Pressable
+            onPress={onQuit}
+            disabled={isLeaving}
+            accessibilityRole="button"
+            className="mt-8 min-h-12 min-w-32 items-center justify-center rounded-xl border border-white/15 bg-surface-raised px-6 active:bg-surface-overlay"
+          >
+            {isLeaving ? (
+              <ActivityIndicator color={colors.white} />
+            ) : (
+              <Text className="text-base font-semibold text-white/70">
+                {t('locked.quit')}
+              </Text>
+            )}
+          </Pressable>
+          {quitFailed && (
+            <Text accessibilityLiveRegion="polite" className="mt-3 text-center text-sm font-semibold text-cream">
+              {t('errors.generic')}
+            </Text>
+          )}
         </Animated.View>
       </View>
     </SafeAreaView>
